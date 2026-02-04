@@ -24,9 +24,10 @@ public class ProductService {
                 createProductDTO.categoryId(),
                 createProductDTO.supplier(),
                 createProductDTO.stock(),
+                true,
                 Instant.now(),
                 null
-        )
-       productRepository.save();
+        );
+       productRepository.save(productEntity);
     }
 }
