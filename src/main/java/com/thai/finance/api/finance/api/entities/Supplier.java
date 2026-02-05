@@ -14,4 +14,27 @@ public class Supplier {
     @Column(name= "NAME")
     private String nameSupplier;
 
+    public Supplier() {
+    }
+
+    public Supplier(UUID id, String nameSupplier) {
+        this.id = id;
+        this.nameSupplier = nameSupplier;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getNameSupplier() {
+        return nameSupplier;
+    }
+
+    public void setNameSupplier(String nameSupplier) {
+        this.nameSupplier = nameSupplier;
+    }
 }
