@@ -1,6 +1,7 @@
 package com.thai.finance.api.finance.api.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.engine.internal.Cascade;
 
 import java.util.UUID;
 
@@ -12,7 +13,7 @@ public class Stock {
     private UUID id;
 
     @OneToOne
-    @JoinColumn(name="PRODUCT_ID", nullable = false, unique = true)
+    @JoinColumn(name="PRODUCT_ID", nullable = true)
     private Product product;
 
     @Column(name= "QUANTITY")
