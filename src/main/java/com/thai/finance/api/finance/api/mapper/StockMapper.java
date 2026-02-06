@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StockMapper {
     public ResponseStockDTO entityToResponseDTO(Stock stock) {
-        ResponseStockDTO  entityConvertedToDto = new ResponseStockDTO(null, stock.getQuantityProduct());
+        ResponseStockDTO  entityConvertedToDto = new ResponseStockDTO(stock.getId(), stock.getProduct().getId(),stock.getProduct().getNameProduct() ,stock.getQuantityProduct());
         return entityConvertedToDto;
     };
     public Stock createStockDTOtoEntity (CreateStockDTO createStockDTO) {

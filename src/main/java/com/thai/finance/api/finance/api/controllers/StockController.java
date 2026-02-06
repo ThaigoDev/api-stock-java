@@ -3,11 +3,12 @@ package com.thai.finance.api.finance.api.controllers;
 import com.thai.finance.api.finance.api.dtos.stockDTO.CreateStockDTO;
 import com.thai.finance.api.finance.api.dtos.stockDTO.ResponseStockDTO;
 import com.thai.finance.api.finance.api.services.StockService;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/stock")
@@ -20,5 +21,16 @@ public class StockController {
     public ResponseEntity<ResponseStockDTO> createStock(@RequestBody CreateStockDTO createStockDTO) {
       var stockCreated = stockService.createStock(createStockDTO);
       return ResponseEntity.ok(stockCreated);
+    };
+    @GetMapping
+    public ResponseEntity<List<ResponseStockDTO>> getAllStocks () {
+        var allStocks = stockService.getAllStocks();
+        return ResponseEntity.ok(allStocks);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseStockDTO> getStockById(@PathVariable("id") UUID stockId) {
+        var stock = stockService.getStockById(stockId);
+        return  ResponseEntity.ok(stock);
     };
 }
