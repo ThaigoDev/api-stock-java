@@ -17,4 +17,37 @@ public class Stock {
 
     @Column(name= "QUANTITY")
     private Integer quantityProduct;
+
+    public Stock() {
+    }
+
+    public Stock(UUID id, Product product, Integer quantityProduct) {
+        this.id = id;
+        this.product = product;
+        this.quantityProduct = quantityProduct;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Integer getQuantityProduct() {
+        return quantityProduct;
+    }
+
+    public void setQuantityProduct(Integer quantityProduct) {
+        this.quantityProduct = quantityProduct;
+    }
 }

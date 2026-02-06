@@ -17,13 +17,13 @@ public class ProductService {
 
     public void createProduct(CreateProductDTO createProductDTO) {
         var productEntity  = new Product(
-                createProductDTO.id(),
+                null,
                 createProductDTO.nameProduct(),
                 createProductDTO.skuProduct(),
                 createProductDTO.minimum_stock(),
-                createProductDTO.categoryId(),
-                createProductDTO.supplier(),
-                createProductDTO.stock(),
+                null,
+                null,
+                null,
                 true,
                 Instant.now(),
                 null

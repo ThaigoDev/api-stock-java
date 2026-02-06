@@ -6,5 +6,5 @@ import com.thai.finance.api.finance.api.entities.Supplier;
 
 import java.util.UUID;
 
-public record CreateProductDTO(UUID id, String nameProduct, String skuProduct, Integer minimum_stock, Category categoryId, Supplier supplier, Stock stock) {
+public record CreateProductDTO( String nameProduct, String skuProduct, Integer minimum_stock, Category categoryId, Supplier supplier, Stock stock) {
 }
