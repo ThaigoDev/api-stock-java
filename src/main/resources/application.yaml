@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/apifinance
+    url: jdbc:mysql://127.0.0.1:3307/apifinance
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver

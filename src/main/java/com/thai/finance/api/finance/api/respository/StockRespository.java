@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface StockRespository  extends JpaRepository<Stock, UUID> {
+    Stock findByProduct(UUID id);
 }
