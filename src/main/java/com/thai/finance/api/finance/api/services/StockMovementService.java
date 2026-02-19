@@ -6,6 +6,7 @@ import com.thai.finance.api.finance.api.dtos.stockMovementDTO.UpdateMovementStoc
 import com.thai.finance.api.finance.api.entities.Product;
 import com.thai.finance.api.finance.api.entities.Stock;
 import com.thai.finance.api.finance.api.entities.Stock_Movement;
+import com.thai.finance.api.finance.api.enums.MovementType;
 import com.thai.finance.api.finance.api.mapper.StockMovementMapper;
 import com.thai.finance.api.finance.api.respository.ProductRepository;
 import com.thai.finance.api.finance.api.respository.StockMovementRepository;
@@ -38,13 +39,25 @@ public class StockMovementService {
         }
         Product productFinded =  productRepository.findById(createStockMovementDTO.productId()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Product Not Found"));
         Stock_Movement  stockMovementConverted = stockMovementMapper.dtoCreateMovementStocktoEntityStockMovement(createStockMovementDTO);
+
+        Stock stockFinded =  stockRespository.findByProduct_Id(productFinded.getId()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Stock Not Found"));
+
+        if(createStockMovementDTO.type() == MovementType.OUT) {
+            productFinded.setInitialStock(productFinded.getInitialStock() - createStockMovementDTO.quantity());
+            stockFinded.setQuantityProduct(stockFinded.getQuantityProduct() - createStockMovementDTO.quantity());
+        }else {
+            productFinded.setInitialStock(productFinded.getInitialStock() + createStockMovementDTO.quantity());
+            stockFinded.setQuantityProduct(stockFinded.getQuantityProduct() + createStockMovementDTO.quantity());
+        }
+        productRepository.save(productFinded);
+        stockRespository.save(stockFinded);
+
         stockMovementConverted.setProduct(productFinded);
-        var stockMovementSaved=    stockMovementMapper.entityStockMovementToResponseStockMovementDTO( stockMovementRepository.save(stockMovementConverted)) ;
-       return stockMovementSaved;
+        return   stockMovementMapper.entityStockMovementToResponseStockMovementDTO( stockMovementRepository.save(stockMovementConverted)) ;
     }
 
     public List<ResponseMovementStockDTO> allStockMovements() {
-      return    stockMovementRepository.findAll().stream().map(stockMovement -> stockMovementMapper.entityStockMovementToResponseStockMovementDTO(stockMovement)).toList();
+      return    stockMovementRepository.findAll().stream().map(stockMovementMapper::entityStockMovementToResponseStockMovementDTO).toList();
     }
 
     public void deleteStockMovementById(UUID stockMovementId) {
@@ -54,10 +67,16 @@ public class StockMovementService {
     public ResponseMovementStockDTO updateStockMovement( UUID id, UpdateMovementStockDTO updateMovementStockDTO) {
         Stock_Movement  stockMovementExist = stockMovementRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Stock Movement not found"));
         Product productFined =  productRepository.findById(updateMovementStockDTO.productId()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Prodcut Not found"));
-        Stock stockFinded =  stockRespository.findByProduct(productFined.getId());
+        Stock stockFinded =  stockRespository.findByProduct_Id(productFined.getId()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stock not found"));
 
-        productFined.setInitialStock(productFined.getInitialStock() - updateMovementStockDTO.quantity());
-        stockFinded.setQuantityProduct(stockFinded.getQuantityProduct() - updateMovementStockDTO.quantity());
+        if(updateMovementStockDTO.type() == MovementType.OUT) {
+            productFined.setInitialStock(productFined.getInitialStock() - updateMovementStockDTO.quantity());
+            stockFinded.setQuantityProduct(stockFinded.getQuantityProduct() - updateMovementStockDTO.quantity());
+        }else {
+            productFined.setInitialStock(productFined.getInitialStock() + updateMovementStockDTO.quantity());
+            stockFinded.setQuantityProduct(stockFinded.getQuantityProduct() + updateMovementStockDTO.quantity());
+        }
+
 
         stockMovementExist.setProduct(productFined);
         stockMovementExist.setType(updateMovementStockDTO.type());
@@ -67,7 +86,6 @@ public class StockMovementService {
         productRepository.save(productFined);
         stockRespository.save(stockFinded);
 
-        var stockMovementCreated =  stockMovementMapper.entityStockMovementToResponseStockMovementDTO(stockMovementRepository.save(stockMovementExist));
-       return stockMovementCreated;
+        return stockMovementMapper.entityStockMovementToResponseStockMovementDTO(stockMovementRepository.save(stockMovementExist));
     }
 }

@@ -38,7 +38,7 @@ public class UserService {
      if(user.isEmpty() || !user.get().isLoginCorrect(loginRequestDTO, passwordEncoder)){
          throw  new BadCredentialsException("User or password is invalid");
      };
-     var expiresIn = 300L;
+     var expiresIn = 1000L;
      Instant now =  Instant.now();
      var scopes  = user.get().getRoles().stream().map(Role::getName).collect(Collectors.joining(" "));
      var claims = JwtClaimsSet.builder().issuer("mybackend")
