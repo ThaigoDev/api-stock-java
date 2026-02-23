@@ -23,7 +23,7 @@ import java.util.UUID;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
-    private final  CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
     private final SupplierRepository supplierRepository;
     private final StockRespository stockRespository;
@@ -31,16 +31,16 @@ public class ProductService {
     public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, SupplierRepository supplierRepository, ProductMapper productMapper, StockRespository stockRespository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
-        this.supplierRepository  = supplierRepository;
+        this.supplierRepository = supplierRepository;
         this.productMapper = productMapper;
         this.stockRespository = stockRespository;
     }
 
     public void createProduct(CreateProductDTO createProductDTO) {
-        Category categoryFinded=  categoryRepository.findById(createProductDTO.categoryId()).orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found"));
-        Supplier supplierFinded  = supplierRepository.findById(createProductDTO.supplier()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Supplier not found"));
+        Category categoryFinded = categoryRepository.findById(createProductDTO.categoryId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
+        Supplier supplierFinded = supplierRepository.findById(createProductDTO.supplier()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found"));
 
-        var productEntity  = new Product(
+        var productEntity = new Product(
                 null,
                 createProductDTO.nameProduct(),
                 createProductDTO.skuProduct(),
@@ -53,42 +53,42 @@ public class ProductService {
                 Instant.now(),
                 null
         );
-        Stock stock  =  new Stock(null, productEntity, productEntity.getInitialStock());
+        Stock stock = new Stock(null, productEntity, productEntity.getInitialStock());
         productEntity.setStock(stock);
-       productRepository.save(productEntity);
+        productRepository.save(productEntity);
     }
 
     public List<ResponseProductDTO> getAllProducts() {
-        var allProductsFinded =  productRepository.findAll().stream().map(productMapper::EntityResponseToDTO).toList();
+        var allProductsFinded = productRepository.findAll().stream().map(productMapper::EntityResponseToDTO).toList();
         return allProductsFinded;
     }
 
     public void updateProductById(UUID productId, UpdateProductDTO updateProductDTO) {
-         var productExist =   productRepository.findById(productId).orElseThrow(()->  new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+        var productExist = productRepository.findById(productId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 
-          Category category = categoryRepository.findById(updateProductDTO.categoryId()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
-          Supplier supplier = supplierRepository.findById(updateProductDTO.supplier()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found"));
+        Category category = categoryRepository.findById(updateProductDTO.categoryId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
+        Supplier supplier = supplierRepository.findById(updateProductDTO.supplier()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found"));
 
-          Stock stock = stockRespository.findById(updateProductDTO.stock()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stock not found"));
+        Stock stock = stockRespository.findById(updateProductDTO.stock()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stock not found"));
 
-         productExist.setNameProduct(updateProductDTO.nameProduct());
-         productExist.setSkuProduct(updateProductDTO.skuProduct());
-         productExist.setMinimum_stock(updateProductDTO.minimum_stock());
-         productExist.setCategoryId(category);
-         productExist.setSupplier(supplier);
-         productExist.setStock(stock);
-         productExist.setInitialStock(updateProductDTO.initialStock());
-         productExist.setActive(updateProductDTO.active());
-         productRepository.save(productExist);
+        productExist.setNameProduct(updateProductDTO.nameProduct());
+        productExist.setSkuProduct(updateProductDTO.skuProduct());
+        productExist.setMinimum_stock(updateProductDTO.minimum_stock());
+        productExist.setCategoryId(category);
+        productExist.setSupplier(supplier);
+        productExist.setStock(stock);
+        productExist.setInitialStock(updateProductDTO.initialStock());
+        productExist.setActive(updateProductDTO.active());
+        productRepository.save(productExist);
     }
 
     public void deleteProductById(UUID productId) {
-        Product productExist = productRepository.findById(productId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+        Product productExist = productRepository.findById(productId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
         productRepository.deleteById(productExist.getId());
 
     }
 
     public List<ResponseProductDTO> findByName(String name) {
-      return   productRepository.findByNameProduct(name).stream().map(productMapper::EntityResponseToDTO).toList() ;
+        return productRepository.findByNameProduct(name).stream().map(productMapper::EntityResponseToDTO).toList();
     }
 }

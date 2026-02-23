@@ -31,7 +31,7 @@ public class CategoryService {
     }
 
     public List<ResponseCategoryDTO> getAllCategories() {
-         return  categoryRepository.findAll().stream().map(category -> categoryMapper.EntityResponseToDTO(category)).toList();
+         return  categoryRepository.findAll().stream().map(categoryMapper::EntityResponseToDTO).toList();
     };
 
     public void deleteCategoryById(UUID id) {
