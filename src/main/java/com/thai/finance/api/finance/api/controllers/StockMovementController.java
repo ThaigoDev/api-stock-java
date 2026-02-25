@@ -1,8 +1,8 @@
 package com.thai.finance.api.finance.api.controllers;
 
-import com.thai.finance.api.finance.api.dtos.stockMovementDTO.CreateStockMovementDTO;
-import com.thai.finance.api.finance.api.dtos.stockMovementDTO.ResponseMovementStockDTO;
-import com.thai.finance.api.finance.api.dtos.stockMovementDTO.UpdateMovementStockDTO;
+import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.CreateStockMovementDTO;
+import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.ResponseMovementStockDTO;
+import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.UpdateMovementStockDTO;
 import com.thai.finance.api.finance.api.services.StockMovementService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

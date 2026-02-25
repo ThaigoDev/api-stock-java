@@ -1,8 +1,7 @@
 package com.thai.finance.api.finance.api.mapper;
 
-import com.thai.finance.api.finance.api.dtos.categoryDTO.ResponseCategoryDTO;
-import com.thai.finance.api.finance.api.entities.Category;
-import org.springframework.context.annotation.Bean;
+import com.thai.finance.api.finance.api.domain.dtos.categoryDTO.ResponseCategoryDTO;
+import com.thai.finance.api.finance.api.domain.entities.Category;
 import org.springframework.stereotype.Component;
 
 @Component

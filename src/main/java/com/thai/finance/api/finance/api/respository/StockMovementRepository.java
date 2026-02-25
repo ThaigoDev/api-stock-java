@@ -1,6 +1,6 @@
 package com.thai.finance.api.finance.api.respository;
 
-import com.thai.finance.api.finance.api.entities.Stock_Movement;
+import com.thai.finance.api.finance.api.domain.entities.Stock_Movement;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

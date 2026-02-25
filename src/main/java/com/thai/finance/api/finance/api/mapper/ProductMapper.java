@@ -1,11 +1,9 @@
 package com.thai.finance.api.finance.api.mapper;
 
-import com.thai.finance.api.finance.api.dtos.productDTO.CreateProductDTO;
-import com.thai.finance.api.finance.api.dtos.productDTO.ResponseProductDTO;
-import com.thai.finance.api.finance.api.entities.Product;
+import com.thai.finance.api.finance.api.domain.dtos.productDTO.ResponseProductDTO;
+import com.thai.finance.api.finance.api.domain.entities.Product;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.util.UUID;
 
 @Component

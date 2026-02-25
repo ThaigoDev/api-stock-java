@@ -1,10 +1,8 @@
 package com.thai.finance.api.finance.api.mapper;
 
-import com.thai.finance.api.finance.api.dtos.categoryDTO.ResponseCategoryDTO;
-import com.thai.finance.api.finance.api.dtos.supplierDTO.CreateSupplierDTO;
-import com.thai.finance.api.finance.api.dtos.supplierDTO.ResponseSupplierDTO;
-import com.thai.finance.api.finance.api.entities.Category;
-import com.thai.finance.api.finance.api.entities.Supplier;
+import com.thai.finance.api.finance.api.domain.dtos.supplierDTO.CreateSupplierDTO;
+import com.thai.finance.api.finance.api.domain.dtos.supplierDTO.ResponseSupplierDTO;
+import com.thai.finance.api.finance.api.domain.entities.Supplier;
 import org.springframework.stereotype.Component;
 
 @Component

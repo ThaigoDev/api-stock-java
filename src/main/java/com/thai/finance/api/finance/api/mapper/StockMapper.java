@@ -1,8 +1,8 @@
 package com.thai.finance.api.finance.api.mapper;
 
-import com.thai.finance.api.finance.api.dtos.stockDTO.CreateStockDTO;
-import com.thai.finance.api.finance.api.dtos.stockDTO.ResponseStockDTO;
-import com.thai.finance.api.finance.api.entities.Stock;
+import com.thai.finance.api.finance.api.domain.dtos.stockDTO.CreateStockDTO;
+import com.thai.finance.api.finance.api.domain.dtos.stockDTO.ResponseStockDTO;
+import com.thai.finance.api.finance.api.domain.entities.Stock;
 import org.springframework.stereotype.Component;
 
 @Component

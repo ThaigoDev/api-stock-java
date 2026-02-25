@@ -1,12 +1,12 @@
 package com.thai.finance.api.finance.api.services;
 
-import com.thai.finance.api.finance.api.dtos.productDTO.CreateProductDTO;
-import com.thai.finance.api.finance.api.dtos.productDTO.ResponseProductDTO;
-import com.thai.finance.api.finance.api.dtos.productDTO.UpdateProductDTO;
-import com.thai.finance.api.finance.api.entities.Category;
-import com.thai.finance.api.finance.api.entities.Product;
-import com.thai.finance.api.finance.api.entities.Stock;
-import com.thai.finance.api.finance.api.entities.Supplier;
+import com.thai.finance.api.finance.api.domain.dtos.productDTO.CreateProductDTO;
+import com.thai.finance.api.finance.api.domain.dtos.productDTO.ResponseProductDTO;
+import com.thai.finance.api.finance.api.domain.dtos.productDTO.UpdateProductDTO;
+import com.thai.finance.api.finance.api.domain.entities.Category;
+import com.thai.finance.api.finance.api.domain.entities.Product;
+import com.thai.finance.api.finance.api.domain.entities.Stock;
+import com.thai.finance.api.finance.api.domain.entities.Supplier;
 import com.thai.finance.api.finance.api.mapper.ProductMapper;
 import com.thai.finance.api.finance.api.respository.CategoryRepository;
 import com.thai.finance.api.finance.api.respository.ProductRepository;
@@ -54,7 +54,9 @@ public class ProductService {
                 null
         );
         Stock stock = new Stock(null, productEntity, productEntity.getInitialStock());
-        productEntity.setStock(stock);
+         var stockSaved = stockRespository.save(stock);
+
+        productEntity.setStock(stockSaved);
         productRepository.save(productEntity);
     }
 

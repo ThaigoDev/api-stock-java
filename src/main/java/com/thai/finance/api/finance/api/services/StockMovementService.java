@@ -1,12 +1,12 @@
 package com.thai.finance.api.finance.api.services;
 
-import com.thai.finance.api.finance.api.dtos.stockMovementDTO.CreateStockMovementDTO;
-import com.thai.finance.api.finance.api.dtos.stockMovementDTO.ResponseMovementStockDTO;
-import com.thai.finance.api.finance.api.dtos.stockMovementDTO.UpdateMovementStockDTO;
-import com.thai.finance.api.finance.api.entities.Product;
-import com.thai.finance.api.finance.api.entities.Stock;
-import com.thai.finance.api.finance.api.entities.Stock_Movement;
-import com.thai.finance.api.finance.api.enums.MovementType;
+import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.CreateStockMovementDTO;
+import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.ResponseMovementStockDTO;
+import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.UpdateMovementStockDTO;
+import com.thai.finance.api.finance.api.domain.entities.Product;
+import com.thai.finance.api.finance.api.domain.entities.Stock;
+import com.thai.finance.api.finance.api.domain.entities.Stock_Movement;
+import com.thai.finance.api.finance.api.domain.enums.MovementType;
 import com.thai.finance.api.finance.api.mapper.StockMovementMapper;
 import com.thai.finance.api.finance.api.respository.ProductRepository;
 import com.thai.finance.api.finance.api.respository.StockMovementRepository;

@@ -1,10 +1,9 @@
 package com.thai.finance.api.finance.api.services;
 
-import com.thai.finance.api.finance.api.dtos.stockDTO.CreateStockDTO;
-import com.thai.finance.api.finance.api.dtos.stockDTO.ResponseStockDTO;
+import com.thai.finance.api.finance.api.domain.dtos.stockDTO.CreateStockDTO;
+import com.thai.finance.api.finance.api.domain.dtos.stockDTO.ResponseStockDTO;
 import com.thai.finance.api.finance.api.mapper.StockMapper;
 import com.thai.finance.api.finance.api.respository.StockRespository;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

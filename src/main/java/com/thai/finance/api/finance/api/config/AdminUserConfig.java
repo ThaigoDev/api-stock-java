@@ -1,7 +1,7 @@
 package com.thai.finance.api.finance.api.config;
 
-import com.thai.finance.api.finance.api.entities.Role;
-import com.thai.finance.api.finance.api.entities.User;
+import com.thai.finance.api.finance.api.domain.entities.Role;
+import com.thai.finance.api.finance.api.domain.entities.User;
 import com.thai.finance.api.finance.api.respository.RoleRepository;
 import com.thai.finance.api.finance.api.respository.UserRepository;
 import jakarta.transaction.Transactional;

@@ -1,8 +1,8 @@
 package com.thai.finance.api.finance.api.controllers;
 
-import com.thai.finance.api.finance.api.dtos.loginDTO.CreateAccountRequestDTO;
-import com.thai.finance.api.finance.api.dtos.loginDTO.LoginRequestDTO;
-import com.thai.finance.api.finance.api.dtos.loginDTO.LoginResponseDTO;
+import com.thai.finance.api.finance.api.domain.dtos.loginDTO.CreateAccountRequestDTO;
+import com.thai.finance.api.finance.api.domain.dtos.loginDTO.LoginRequestDTO;
+import com.thai.finance.api.finance.api.domain.dtos.loginDTO.LoginResponseDTO;
 import com.thai.finance.api.finance.api.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.JwtEncoder;

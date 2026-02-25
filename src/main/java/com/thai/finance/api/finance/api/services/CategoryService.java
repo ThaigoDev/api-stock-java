@@ -1,8 +1,8 @@
 package com.thai.finance.api.finance.api.services;
 
-import com.thai.finance.api.finance.api.dtos.categoryDTO.CreateCategoryDTO;
-import com.thai.finance.api.finance.api.dtos.categoryDTO.ResponseCategoryDTO;
-import com.thai.finance.api.finance.api.entities.Category;
+import com.thai.finance.api.finance.api.domain.dtos.categoryDTO.CreateCategoryDTO;
+import com.thai.finance.api.finance.api.domain.dtos.categoryDTO.ResponseCategoryDTO;
+import com.thai.finance.api.finance.api.domain.entities.Category;
 import com.thai.finance.api.finance.api.mapper.CategoryMapper;
 import com.thai.finance.api.finance.api.respository.CategoryRepository;
 import org.springframework.http.HttpStatus;

@@ -1,9 +1,8 @@
 package com.thai.finance.api.finance.api.controllers;
 
-import com.thai.finance.api.finance.api.dtos.stockDTO.CreateStockDTO;
-import com.thai.finance.api.finance.api.dtos.stockDTO.ResponseStockDTO;
+import com.thai.finance.api.finance.api.domain.dtos.stockDTO.CreateStockDTO;
+import com.thai.finance.api.finance.api.domain.dtos.stockDTO.ResponseStockDTO;
 import com.thai.finance.api.finance.api.services.StockService;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

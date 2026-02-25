@@ -1,10 +1,10 @@
 package com.thai.finance.api.finance.api.services;
 
-import com.thai.finance.api.finance.api.dtos.loginDTO.CreateAccountRequestDTO;
-import com.thai.finance.api.finance.api.dtos.loginDTO.LoginRequestDTO;
-import com.thai.finance.api.finance.api.dtos.loginDTO.LoginResponseDTO;
-import com.thai.finance.api.finance.api.entities.Role;
-import com.thai.finance.api.finance.api.entities.User;
+import com.thai.finance.api.finance.api.domain.dtos.loginDTO.CreateAccountRequestDTO;
+import com.thai.finance.api.finance.api.domain.dtos.loginDTO.LoginRequestDTO;
+import com.thai.finance.api.finance.api.domain.dtos.loginDTO.LoginResponseDTO;
+import com.thai.finance.api.finance.api.domain.entities.Role;
+import com.thai.finance.api.finance.api.domain.entities.User;
 import com.thai.finance.api.finance.api.respository.RoleRepository;
 import com.thai.finance.api.finance.api.respository.UserRepository;
 import org.springframework.http.HttpStatus;
