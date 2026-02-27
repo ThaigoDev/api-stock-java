@@ -36,8 +36,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) {
         http.authorizeHttpRequests( authorize -> authorize
-                .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                .requestMatchers(HttpMethod.POST,"/createaccount").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth").permitAll()
+                .requestMatchers(HttpMethod.POST,"/auth/signup").permitAll()
                 .anyRequest().authenticated()
         ).csrf(csrf -> csrf.disable())
                 .oauth2ResourceServer( auth -> auth.jwt(Customizer.withDefaults()))

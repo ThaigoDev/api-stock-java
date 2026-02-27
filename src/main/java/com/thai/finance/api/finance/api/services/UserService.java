@@ -1,8 +1,8 @@
 package com.thai.finance.api.finance.api.services;
 
-import com.thai.finance.api.finance.api.domain.dtos.loginDTO.CreateAccountRequestDTO;
-import com.thai.finance.api.finance.api.domain.dtos.loginDTO.LoginRequestDTO;
-import com.thai.finance.api.finance.api.domain.dtos.loginDTO.LoginResponseDTO;
+import com.thai.finance.api.finance.api.domain.dtos.AuthDTO.CreateAccountRequestDTO;
+import com.thai.finance.api.finance.api.domain.dtos.AuthDTO.LoginRequestDTO;
+import com.thai.finance.api.finance.api.domain.dtos.AuthDTO.LoginResponseDTO;
 import com.thai.finance.api.finance.api.domain.entities.Role;
 import com.thai.finance.api.finance.api.domain.entities.User;
 import com.thai.finance.api.finance.api.respository.RoleRepository;

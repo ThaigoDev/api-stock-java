@@ -13,6 +13,6 @@ spring:
 
 jwt:
    public:
-     key: classpath:keys/public.pub
+     key: classpath:keys/app.pub
    private:
     key: classpath:keys/app.key

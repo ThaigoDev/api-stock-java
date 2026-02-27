@@ -1,6 +1,6 @@
 package com.thai.finance.api.finance.api.domain.entities;
 
-import com.thai.finance.api.finance.api.domain.dtos.loginDTO.LoginRequestDTO;
+import com.thai.finance.api.finance.api.domain.dtos.AuthDTO.LoginRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
