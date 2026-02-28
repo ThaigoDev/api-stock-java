@@ -17,7 +17,7 @@ public class ProductMapper {
              stockQuantity= product.getStock().getQuantityProduct();
          }
 
-        ResponseProductDTO entityConverted =  new ResponseProductDTO(product.getNameProduct(), product.getSkuProduct(), product.getMinimum_stock(), product.getCategoryId().getId(), product.getSupplier().getId(),stockId,stockQuantity, product.getInitialStock(), product.isActive());
+        ResponseProductDTO entityConverted =  new ResponseProductDTO(product.getId(),product.getNameProduct(), product.getSkuProduct(), product.getMinimum_stock(), product.getCategoryId().getId(), product.getSupplier().getId(),stockId,stockQuantity, product.getInitialStock(), product.isActive());
         return  entityConverted;
 
     };

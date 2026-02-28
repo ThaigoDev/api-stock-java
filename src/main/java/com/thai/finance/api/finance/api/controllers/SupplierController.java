@@ -6,7 +6,9 @@ import com.thai.finance.api.finance.api.domain.dtos.supplierDTO.UpdateSupplierDT
 import com.thai.finance.api.finance.api.services.SupplierService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +24,11 @@ public class SupplierController {
     @PostMapping
     public ResponseEntity<ResponseSupplierDTO> createSupplier(@RequestBody CreateSupplierDTO createSupplierDTO) {
         var createdSupplier  =  supplierService.createSupplier(createSupplierDTO);
-        return ResponseEntity.ok(createdSupplier);
+        URI location  = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("{id}")
+                .buildAndExpand(createdSupplier.id())
+                .toUri();
+        return ResponseEntity.created(location).body(createdSupplier);
     }
     @GetMapping("/all")
     public ResponseEntity<List<ResponseSupplierDTO>>  getAllSuppliers () {

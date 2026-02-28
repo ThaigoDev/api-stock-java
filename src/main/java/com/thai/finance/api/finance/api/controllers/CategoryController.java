@@ -5,7 +5,9 @@ import com.thai.finance.api.finance.api.domain.dtos.categoryDTO.ResponseCategory
 import com.thai.finance.api.finance.api.services.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,8 +22,12 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<ResponseCategoryDTO> createCategory(@RequestBody CreateCategoryDTO createCategoryDTO) {
         var createdCategory =  categoryService.createCategory(createCategoryDTO);
-
-        return ResponseEntity.ok(createdCategory);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(createdCategory.id())
+                .toUri();
+        return ResponseEntity.created(location).body(createdCategory);
     };
      @GetMapping("/all")
     public ResponseEntity<List<ResponseCategoryDTO>> getAllCategories (){

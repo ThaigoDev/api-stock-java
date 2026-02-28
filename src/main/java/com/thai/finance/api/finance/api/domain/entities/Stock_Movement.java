@@ -4,14 +4,19 @@ import com.thai.finance.api.finance.api.domain.enums.MovementType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "TB_STOCK_MOVEMENT")
 @Getter
 @Setter
+@EntityListeners(AuditingEntityListener.class)
 public class Stock_Movement {
 
     @Id
@@ -28,8 +33,11 @@ public class Stock_Movement {
     @Column(name= "QUANTITY_MOVEMENT")
     private Integer quantityMovement;
 
-    private Instant createAt = Instant.now();
-    private Instant updateAt= null;
+    @CreatedDate
+    private LocalDateTime createAt;
+
+    @LastModifiedDate
+    private Instant updateAt;
 
     public Stock_Movement() {
     }

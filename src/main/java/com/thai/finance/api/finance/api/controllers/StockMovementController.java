@@ -6,7 +6,9 @@ import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.UpdateMovem
 import com.thai.finance.api.finance.api.services.StockMovementService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +22,13 @@ public class StockMovementController {
     }
     @PostMapping
     public ResponseEntity<ResponseMovementStockDTO> createStockMovement(@RequestBody  CreateStockMovementDTO createStockMovementDTO) {
-         return  ResponseEntity.accepted().body( stockMovementService.createStockMovement(createStockMovementDTO));
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(createStockMovementDTO.productId())
+                .toUri();
+
+         return  ResponseEntity.created(location).body( stockMovementService.createStockMovement(createStockMovementDTO));
     }
     @GetMapping
     public ResponseEntity<List<ResponseMovementStockDTO>> allStockMovements() {

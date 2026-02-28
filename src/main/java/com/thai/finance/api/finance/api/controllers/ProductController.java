@@ -6,7 +6,9 @@ import com.thai.finance.api.finance.api.domain.dtos.productDTO.UpdateProductDTO;
 import com.thai.finance.api.finance.api.services.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,17 +19,26 @@ public class ProductController {
 
 
     public ProductController(ProductService productService) {
-            this.productService = productService;
+        this.productService = productService;
     }
 
     @PostMapping
-    public ResponseEntity<Void> createProduct(@RequestBody CreateProductDTO createProductDTO) {
-        productService.createProduct(createProductDTO);
-        return ResponseEntity.ok().build();
-    };
+    public ResponseEntity<ResponseProductDTO> createProduct(@RequestBody CreateProductDTO createProductDTO) {
+        ResponseProductDTO productCreated = productService.createProduct(createProductDTO);
+
+        URI location  = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(productCreated.id())
+                .toUri();
+
+        return ResponseEntity.created(location).body(productCreated);
+    }
+
+    ;
 
     @GetMapping
-    public ResponseEntity<List<ResponseProductDTO>> getProducts () {
+    public ResponseEntity<List<ResponseProductDTO>> getProducts() {
         var allProducts = productService.getAllProducts();
         return ResponseEntity.ok(allProducts);
     }
@@ -35,7 +46,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") UUID productId) {
         productService.deleteProductById(productId);
-        return  ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build();
 
     }
 
@@ -43,11 +54,13 @@ public class ProductController {
     public ResponseEntity<Void> putProduct(@PathVariable("id") UUID productId, @RequestBody UpdateProductDTO updateProductDTO) {
         productService.updateProductById(productId, updateProductDTO);
         return ResponseEntity.noContent().build();
-   };
+    }
+
+    ;
 
     @GetMapping("/search")
-    public ResponseEntity<List<ResponseProductDTO>> searchProductByName(@RequestParam("name") String name ) {
-        return  ResponseEntity.ok().body(productService.findByName(name));
+    public ResponseEntity<List<ResponseProductDTO>> searchProductByName(@RequestParam("name") String name) {
+        return ResponseEntity.ok().body(productService.findByName(name));
 
     }
 

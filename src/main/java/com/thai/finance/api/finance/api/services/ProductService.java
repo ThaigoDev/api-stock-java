@@ -36,7 +36,7 @@ public class ProductService {
         this.stockRespository = stockRespository;
     }
 
-    public void createProduct(CreateProductDTO createProductDTO) {
+    public ResponseProductDTO createProduct(CreateProductDTO createProductDTO) {
         Category categoryFinded = categoryRepository.findById(createProductDTO.categoryId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
         Supplier supplierFinded = supplierRepository.findById(createProductDTO.supplier()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found"));
 
@@ -57,6 +57,10 @@ public class ProductService {
         var productSaved = productRepository.save(productEntity);
         Stock stock = new Stock(null, productSaved, productEntity.getInitialStock());
         productEntity.setStock(stock);
+
+        return  productMapper.EntityResponseToDTO(productSaved);
+
+
 
     }
 

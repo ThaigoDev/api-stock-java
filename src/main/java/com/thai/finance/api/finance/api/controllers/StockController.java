@@ -5,7 +5,9 @@ import com.thai.finance.api.finance.api.domain.dtos.stockDTO.ResponseStockDTO;
 import com.thai.finance.api.finance.api.services.StockService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +21,13 @@ public class StockController {
     @PostMapping
     public ResponseEntity<ResponseStockDTO> createStock(@RequestBody CreateStockDTO createStockDTO) {
       var stockCreated = stockService.createStock(createStockDTO);
-      return ResponseEntity.ok(stockCreated);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(stockCreated.id())
+                .toUri();
+
+      return ResponseEntity.created(location).body(stockCreated);
     };
     @GetMapping
     public ResponseEntity<List<ResponseStockDTO>> getAllStocks () {

@@ -5,7 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -14,6 +18,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -22,5 +27,10 @@ public class Supplier {
     @Column(name= "NAME")
     private String nameSupplier;
 
+    @CreatedDate
+    private LocalDateTime createAt;
+
+    @LastModifiedDate
+    private LocalDateTime updateAt;
 
 }
