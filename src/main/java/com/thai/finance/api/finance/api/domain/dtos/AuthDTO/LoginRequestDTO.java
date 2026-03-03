@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record LoginRequestDTO(
-        @NotBlank( message = "Email is required")
+        @NotBlank(message = "Email is required")
         @Email
         String email,
 
-        @NotBlank (message = "password is required")
-        @Size(min = 3, max = 20,message = "The password must be between 5 and 20 characters long.")
+        @NotBlank(message = "password is required")
+        @Size(min = 3, max = 20, message = "The password must be between 5 and 20 characters long.")
         String password) {
 }

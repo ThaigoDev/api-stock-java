@@ -7,68 +7,50 @@ import com.thai.finance.api.finance.api.domain.entities.Category;
 import com.thai.finance.api.finance.api.domain.entities.Product;
 import com.thai.finance.api.finance.api.domain.entities.Stock;
 import com.thai.finance.api.finance.api.domain.entities.Supplier;
-import com.thai.finance.api.finance.api.mapper.ProductMapper;
+import com.thai.finance.api.finance.api.mapper.MapperProduct;
 import com.thai.finance.api.finance.api.respository.CategoryRepository;
 import com.thai.finance.api.finance.api.respository.ProductRepository;
 import com.thai.finance.api.finance.api.respository.StockRespository;
 import com.thai.finance.api.finance.api.respository.SupplierRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final ProductMapper productMapper;
     private final SupplierRepository supplierRepository;
     private final StockRespository stockRespository;
+    private final MapperProduct mapper;
 
-    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, SupplierRepository supplierRepository, ProductMapper productMapper, StockRespository stockRespository) {
-        this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
-        this.supplierRepository = supplierRepository;
-        this.productMapper = productMapper;
-        this.stockRespository = stockRespository;
-    }
 
     public ResponseProductDTO createProduct(CreateProductDTO createProductDTO) {
         Category categoryFinded = categoryRepository.findById(createProductDTO.categoryId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
         Supplier supplierFinded = supplierRepository.findById(createProductDTO.supplier()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found"));
 
-        var productEntity = new Product(
-                null,
-                createProductDTO.nameProduct(),
-                createProductDTO.skuProduct(),
-                createProductDTO.minimum_stock(),
-                categoryFinded,
-                supplierFinded,
-                null,
-                createProductDTO.initialStock(),
-                createProductDTO.active(),
-                Instant.now(),
-                null
-        );
+         var ProductEntity =   mapper.dtoToEntity(createProductDTO);
+         ProductEntity.setSupplier(supplierFinded);
 
-        var productSaved = productRepository.save(productEntity);
-        Stock stock = new Stock(null, productSaved, productEntity.getInitialStock());
-        productEntity.setStock(stock);
+        var productSaved = productRepository.save(ProductEntity);
+        Stock stock = new Stock(null, productSaved, ProductEntity.getInitialStock());
+        ProductEntity.setStock(stock);
 
-        return  productMapper.EntityResponseToDTO(productSaved);
+        return  mapper.entityToDTO(productSaved);
 
 
 
     }
 
     public List<ResponseProductDTO> getAllProducts() {
-        var allProductsFinded = productRepository.findAll().stream().map(productMapper::EntityResponseToDTO).toList();
-        return allProductsFinded;
+        return  productRepository.findAll().stream().map(mapper::entityToDTO).toList();
     }
 
     public void updateProductById(UUID productId, UpdateProductDTO updateProductDTO) {
@@ -108,6 +90,6 @@ public class ProductService {
 
         Example<Product>  productExample = Example.of(ProductExample,matcher);
 
-        return productRepository.findAll(productExample).stream().map(productMapper::EntityResponseToDTO).toList();
+        return productRepository.findAll(productExample).stream().map(mapper::entityToDTO).toList();
     }
 }

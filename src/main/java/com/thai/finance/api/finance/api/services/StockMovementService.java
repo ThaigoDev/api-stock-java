@@ -7,10 +7,12 @@ import com.thai.finance.api.finance.api.domain.entities.Product;
 import com.thai.finance.api.finance.api.domain.entities.Stock;
 import com.thai.finance.api.finance.api.domain.entities.Stock_Movement;
 import com.thai.finance.api.finance.api.domain.enums.MovementType;
+import com.thai.finance.api.finance.api.mapper.MapperStockMovement;
 import com.thai.finance.api.finance.api.mapper.StockMovementMapper;
 import com.thai.finance.api.finance.api.respository.ProductRepository;
 import com.thai.finance.api.finance.api.respository.StockMovementRepository;
 import com.thai.finance.api.finance.api.respository.StockRespository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,25 +22,21 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class StockMovementService {
     private final StockMovementRepository stockMovementRepository;
     private final StockMovementMapper stockMovementMapper;
     private final ProductRepository productRepository;
     private final StockRespository stockRespository;
-
-    public StockMovementService(StockMovementRepository stockMovementRepository, StockMovementMapper stockMovementMapper, ProductRepository productRepository, StockRespository stockRespository) {
-        this.stockMovementRepository = stockMovementRepository;
-        this.stockMovementMapper = stockMovementMapper;
-        this.productRepository = productRepository;
-        this.stockRespository = stockRespository;
-    }
+    private final MapperStockMovement mapper;
 
     public ResponseMovementStockDTO createStockMovement(CreateStockMovementDTO createStockMovementDTO) {
         if (createStockMovementDTO.productId() == null) {
             throw new IllegalArgumentException("priductId is obrigatory");
         }
+
         Product productFinded = productRepository.findById(createStockMovementDTO.productId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product Not Found"));
-        Stock_Movement stockMovementConverted = stockMovementMapper.dtoCreateMovementStocktoEntityStockMovement(createStockMovementDTO);
+        Stock_Movement stockMovementConverted = mapper.dtoToEntity(createStockMovementDTO);
 
         Stock stockFinded = stockRespository.findByProduct_Id(productFinded.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stock Not Found"));
 
@@ -57,11 +55,11 @@ public class StockMovementService {
         stockRespository.save(stockFinded);
 
         stockMovementConverted.setProduct(productFinded);
-        return stockMovementMapper.entityStockMovementToResponseStockMovementDTO(stockMovementRepository.save(stockMovementConverted));
+        return mapper.entityToDto(stockMovementRepository.save(stockMovementConverted));
     }
 
     public List<ResponseMovementStockDTO> allStockMovements() {
-        return stockMovementRepository.findAll().stream().map(stockMovementMapper::entityStockMovementToResponseStockMovementDTO).toList();
+        return stockMovementRepository.findAll().stream().map(mapper::entityToDto).toList();
     }
 
     public void deleteStockMovementById(UUID stockMovementId) {
@@ -93,6 +91,6 @@ public class StockMovementService {
         productRepository.save(productFinded);
         stockRespository.save(stockFinded);
 
-        return stockMovementMapper.entityStockMovementToResponseStockMovementDTO(stockMovementRepository.save(stockMovementExist));
+        return mapper.entityToDto(stockMovementRepository.save(stockMovementExist));
     }
 }

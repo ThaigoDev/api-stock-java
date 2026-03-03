@@ -26,39 +26,41 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtEncoder jwtEncoder;
     private final RoleRepository roleRepository;
-    public UserService (UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, JwtEncoder jwtEncoder, RoleRepository roleRepository) {
+
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, JwtEncoder jwtEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder =passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
         this.jwtEncoder = jwtEncoder;
         this.roleRepository = roleRepository;
     }
 
-    public LoginResponseDTO login (LoginRequestDTO loginRequestDTO) {
-     var user = userRepository.findByEmail(loginRequestDTO.email());
-     if(user.isEmpty() || !user.get().isLoginCorrect(loginRequestDTO, passwordEncoder)){
-         throw  new BadCredentialsException("User or password is invalid");
-     };
-     var expiresIn = 1000L;
-     Instant now =  Instant.now();
-     var scopes  = user.get().getRoles().stream().map(Role::getName).collect(Collectors.joining(" "));
-     var claims = JwtClaimsSet.builder().issuer("mybackend")
-             .subject(
-                     user.get().getUserId().toString()
-             )
-             .expiresAt(now.plusSeconds(expiresIn))
-             .issuedAt(now)
-             .claim("scope", scopes)
-             .build();
+    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
+        var user = userRepository.findByEmail(loginRequestDTO.email());
+        if (user.isEmpty() || !user.get().isLoginCorrect(loginRequestDTO, passwordEncoder)) {
+            throw new BadCredentialsException("User or password is invalid");
+        }
+        ;
+        var expiresIn = 1000L;
+        Instant now = Instant.now();
+        var scopes = user.get().getRoles().stream().map(Role::getName).collect(Collectors.joining(" "));
+        var claims = JwtClaimsSet.builder().issuer("mybackend")
+                .subject(
+                        user.get().getUserId().toString()
+                )
+                .expiresAt(now.plusSeconds(expiresIn))
+                .issuedAt(now)
+                .claim("scope", scopes)
+                .build();
 
-     var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-     return new LoginResponseDTO(jwtValue, expiresIn);
+        var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        return new LoginResponseDTO(jwtValue, expiresIn);
 
     }
 
     public void createAccount(CreateAccountRequestDTO createAccountRequestDTO) {
         var basicRole = roleRepository.findByName(Role.Values.BASIC.name());
         var userFromDB = userRepository.findByEmail(createAccountRequestDTO.username());
-        if(userFromDB.isPresent()) {
+        if (userFromDB.isPresent()) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_CONTENT);
 
         }

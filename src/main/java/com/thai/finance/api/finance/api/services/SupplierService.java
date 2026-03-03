@@ -19,28 +19,33 @@ public class SupplierService {
     private final SupplierRepository supplierRepository;
     private final SupplierMapper supplierMapper;
 
-    public SupplierService( SupplierRepository supplierRepository, SupplierMapper supplierMapper) {
+    public SupplierService(SupplierRepository supplierRepository, SupplierMapper supplierMapper) {
         this.supplierRepository = supplierRepository;
         this.supplierMapper = supplierMapper;
     }
 
     public ResponseSupplierDTO createSupplier(CreateSupplierDTO createSupplierDTO) {
 
-         var supplierEntityConverted =  supplierMapper.EntityResponseToDTO(supplierRepository.save(supplierMapper.CreateDtoToEntity(createSupplierDTO)));
+        var supplierEntityConverted = supplierMapper.EntityResponseToDTO(supplierRepository.save(supplierMapper.CreateDtoToEntity(createSupplierDTO)));
         return supplierEntityConverted;
-    };
+    }
+
+    ;
 
     public List<ResponseSupplierDTO> getAllSuppliers() {
-        return  supplierRepository.findAll().stream().map(supplierMapper::EntityResponseToDTO).toList();
+        return supplierRepository.findAll().stream().map(supplierMapper::EntityResponseToDTO).toList();
 
-    };
+    }
+
+    ;
+
     public void deleteSupplierById(UUID supplierId) {
-       var supplierExist =    supplierRepository.findById(supplierId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found"));
+        var supplierExist = supplierRepository.findById(supplierId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found"));
         supplierRepository.deleteById(supplierExist.getId());
     }
 
     public void updateSupplier(UUID supplierId, UpdateSupplierDTO updateSupplierDTO) {
-        var supplierExist  = supplierRepository.findById(supplierId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Supplier not found"));
+        var supplierExist = supplierRepository.findById(supplierId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found"));
         supplierExist.setNameSupplier(updateSupplierDTO.name());
         supplierRepository.save(supplierExist);
 
