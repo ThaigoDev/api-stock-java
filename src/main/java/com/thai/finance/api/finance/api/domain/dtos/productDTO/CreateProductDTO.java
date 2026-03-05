@@ -22,7 +22,7 @@ public record CreateProductDTO(
         UUID categoryId,
 
         @NotNull(message = "the propriety 'supplier' cannot be null ")
-        UUID supplier,
+        UUID supplierId,
 
         UUID stock,
 

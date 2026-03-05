@@ -8,7 +8,7 @@ public record ResponseProductDTO(
         String skuProduct,
         Integer minimum_stock,
         UUID categoryId,
-        UUID supplier,
+        UUID supplierId,
         UUID stock,
         Integer stockQuantity,
         Integer initialStock,

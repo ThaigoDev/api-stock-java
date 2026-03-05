@@ -34,11 +34,11 @@ public class ProductService {
 
     public ResponseProductDTO createProduct(CreateProductDTO createProductDTO) {
         Category categoryFinded = categoryRepository.findById(createProductDTO.categoryId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
-        Supplier supplierFinded = supplierRepository.findById(createProductDTO.supplier()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found"));
+        Supplier supplierFinded = supplierRepository.findById(createProductDTO.supplierId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found"));
 
          var ProductEntity =   mapper.dtoToEntity(createProductDTO);
          ProductEntity.setSupplier(supplierFinded);
-
+         ProductEntity.setCategoryId(categoryFinded);
         var productSaved = productRepository.save(ProductEntity);
         Stock stock = new Stock(null, productSaved, ProductEntity.getInitialStock());
         ProductEntity.setStock(stock);
