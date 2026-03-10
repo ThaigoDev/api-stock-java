@@ -20,7 +20,7 @@ public class ControllerFornecedor {
     private final ServiceFornecedor serviceFornecedor;
 
     @PostMapping
-    public ResponseEntity<FornecedorRespostaDTO> createSupplier(@RequestBody @Valid FornecedorRequisicaoDTO fornecedorRequisicaoDTO) {
+    public ResponseEntity<FornecedorRespostaDTO> salvarFornecedor(@RequestBody @Valid FornecedorRequisicaoDTO fornecedorRequisicaoDTO) {
         var fornecedorCriado  =  serviceFornecedor.salvar(fornecedorRequisicaoDTO);
         URI location  = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("{id}")
