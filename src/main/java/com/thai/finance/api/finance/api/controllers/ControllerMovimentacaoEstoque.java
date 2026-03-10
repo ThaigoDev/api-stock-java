@@ -34,12 +34,12 @@ public class ControllerMovimentacaoEstoque {
          return  ResponseEntity.created(location).body(estoqueCriado );
     }
     @GetMapping
-    public ResponseEntity<List<MovimentacaoEstoqueRespostaDTO>> obterEstoques() {
+    public ResponseEntity<List<MovimentacaoEstoqueRespostaDTO>> obterMovimentacoesEstoques() {
         return  ResponseEntity.ok().body(serviceMovimentacaoEstoque.obter());
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> removerEstoque(@PathVariable("id") UUID movimentacaoEstoque_id) {
+    public ResponseEntity<Void> removerMovimentacaoEstoque(@PathVariable("id") UUID movimentacaoEstoque_id) {
         serviceMovimentacaoEstoque.remover(movimentacaoEstoque_id);
         return ResponseEntity.noContent().build();
     }
