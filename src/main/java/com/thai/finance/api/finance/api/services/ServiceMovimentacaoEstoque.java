@@ -1,11 +1,11 @@
 package com.thai.finance.api.finance.api.services;
 
-import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.ResponseMovementStockDTO;
-import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.UpdateMovementStockDTO;
+import com.thai.finance.api.finance.api.domain.dtos.MovimentacaoEstoqueDTO.MovimentacaoEstoqueRequisicaoDTO;
+import com.thai.finance.api.finance.api.domain.dtos.MovimentacaoEstoqueDTO.MovimentacaoEstoqueRespostaDTO;
 import com.thai.finance.api.finance.api.domain.entities.Produto;
 import com.thai.finance.api.finance.api.domain.entities.Estoque;
 import com.thai.finance.api.finance.api.domain.entities.MovimentacaoEstoque;
-import com.thai.finance.api.finance.api.domain.enums.MovementType;
+import com.thai.finance.api.finance.api.domain.enums.TipoMovimentacaoEstoque;
 import com.thai.finance.api.finance.api.mapper.MapperMovimentacaoEstoque;
 import com.thai.finance.api.finance.api.mapper.StockMovementMapper;
 import com.thai.finance.api.finance.api.respository.RepositoryProduto;
@@ -15,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,67 +27,62 @@ public class ServiceMovimentacaoEstoque {
     private final RepositoryEstoque repositoryEstoque;
     private final MapperMovimentacaoEstoque mapper;
 
-    public ResponseMovementStockDTO createStockMovement(com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.MovimentacaoEstoqueRequisicaoDTO movimentacaoEstoqueRequisicaoDTO) {
-        if (movimentacaoEstoqueRequisicaoDTO.productId() == null) {
-            throw new IllegalArgumentException("priductId is obrigatory");
+    public MovimentacaoEstoqueRespostaDTO salvar(MovimentacaoEstoqueRequisicaoDTO movimentacaoEstoqueRequisicaoDTO) {
+        if (movimentacaoEstoqueRequisicaoDTO.produto() == null) {
+            throw new IllegalArgumentException("Produto é obrigatório");
         }
 
-        Produto produtoFinded = repositoryProduto.findById(movimentacaoEstoqueRequisicaoDTO.productId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product Not Found"));
-        MovimentacaoEstoque stockMovementConverted = mapper.dtoToEntity(movimentacaoEstoqueRequisicaoDTO);
+        Produto produtoEncontrado = repositoryProduto.findById(movimentacaoEstoqueRequisicaoDTO.produto()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+        MovimentacaoEstoque movimentacaoEstoqueEntidade = mapper.dtoToEntity(movimentacaoEstoqueRequisicaoDTO);
 
-        Estoque estoqueFinded = repositoryEstoque.findByProduct_Id(produtoFinded.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stock Not Found"));
+        Estoque estoqueEncontrado = repositoryEstoque.findByProduct_Id(produtoEncontrado.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Estoque não encontrado"));
 
-        if (movimentacaoEstoqueRequisicaoDTO.type() == MovementType.OUT) {
-            if (movimentacaoEstoqueRequisicaoDTO.quantity() >= produtoFinded.getMinimum_stock()) {
-                throw new IllegalArgumentException("not authorized the transaction");
+        if (movimentacaoEstoqueRequisicaoDTO.tipo() == TipoMovimentacaoEstoque.SAIDA) {
+            if (movimentacaoEstoqueRequisicaoDTO.quantidade() >= produtoEncontrado.getEstoque_minimo()) {
+                throw new IllegalArgumentException("Movimentação não autorizada,  a quantidade é maior que o estoque mínimo do produto" + produtoEncontrado.getNome());
             }
 
-            produtoFinded.setInitialStock(produtoFinded.getInitialStock() - movimentacaoEstoqueRequisicaoDTO.quantity());
-            estoqueFinded.setQuantityProduct(estoqueFinded.getQuantityProduct() - movimentacaoEstoqueRequisicaoDTO.quantity());
+            estoqueEncontrado.setQuantidade(estoqueEncontrado.getQuantidade() - movimentacaoEstoqueRequisicaoDTO.quantidade());
         } else {
-            produtoFinded.setInitialStock(produtoFinded.getInitialStock() + movimentacaoEstoqueRequisicaoDTO.quantity());
-            estoqueFinded.setQuantityProduct(estoqueFinded.getQuantityProduct() + movimentacaoEstoqueRequisicaoDTO.quantity());
+            estoqueEncontrado.setQuantidade(estoqueEncontrado.getQuantidade() + movimentacaoEstoqueRequisicaoDTO.quantidade());
         }
-        repositoryProduto.save(produtoFinded);
-        repositoryEstoque.save(estoqueFinded);
+        repositoryProduto.save(produtoEncontrado);
+        repositoryEstoque.save(estoqueEncontrado);
 
-        stockMovementConverted.setProduto(produtoFinded);
-        return mapper.entityToDto(repositoryMovimentacaoEstoque.save(stockMovementConverted));
+        movimentacaoEstoqueEntidade.setProduto(produtoEncontrado);
+        return mapper.entityToDto(repositoryMovimentacaoEstoque.save(movimentacaoEstoqueEntidade));
     }
 
-    public List<ResponseMovementStockDTO> allStockMovements() {
+    public List<MovimentacaoEstoqueRespostaDTO> obter() {
         return repositoryMovimentacaoEstoque.findAll().stream().map(mapper::entityToDto).toList();
     }
 
-    public void deleteStockMovementById(UUID stockMovementId) {
-        repositoryMovimentacaoEstoque.deleteById(stockMovementId);
+    public void remover(UUID movimentacaoEstoque_id) {
+        repositoryMovimentacaoEstoque.deleteById(movimentacaoEstoque_id);
     }
 
-    public ResponseMovementStockDTO updateStockMovement(UUID id, UpdateMovementStockDTO updateMovementStockDTO) {
-        MovimentacaoEstoque stockMovementExist = repositoryMovimentacaoEstoque.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stock Movement not found"));
-        Produto produtoFinded = repositoryProduto.findById(updateMovementStockDTO.productId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Prodcut Not found"));
-        Estoque estoqueFinded = repositoryEstoque.findByProduct_Id(produtoFinded.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stock not found"));
+    public MovimentacaoEstoqueRespostaDTO atualizar(UUID movimentacaoEstoque_id, MovimentacaoEstoqueRequisicaoDTO movimentacaoEstoqueRequisicaoDTO) {
+        MovimentacaoEstoque movimentacaoEstoqueEncontrada = repositoryMovimentacaoEstoque.findById(movimentacaoEstoque_id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movimentação de Estoque não encontrada"));
+        Produto produtoEncontrado = repositoryProduto.findById(movimentacaoEstoqueRequisicaoDTO.produto()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+        Estoque estoqueEncontrado = repositoryEstoque.findByProduct_Id(produtoEncontrado.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Estoque não encontrado"));
 
-        if (updateMovementStockDTO.type() == MovementType.OUT) {
-            if (updateMovementStockDTO.quantity() >= produtoFinded.getMinimum_stock()) {
-                throw new IllegalArgumentException("not authorized the transaction");
+        if (movimentacaoEstoqueRequisicaoDTO.tipo() == TipoMovimentacaoEstoque.SAIDA) {
+            if (movimentacaoEstoqueRequisicaoDTO.quantidade() >= produtoEncontrado.getEstoque_minimo()) {
+                throw new IllegalArgumentException("Movimentação não autorizada,  a quantidade é maior que o estoque mínimo do produto" + produtoEncontrado.getNome());
             }
-            produtoFinded.setInitialStock(produtoFinded.getInitialStock() - updateMovementStockDTO.quantity());
-            estoqueFinded.setQuantityProduct(estoqueFinded.getQuantityProduct() - updateMovementStockDTO.quantity());
+            estoqueEncontrado.setQuantidade(estoqueEncontrado.getQuantidade() - movimentacaoEstoqueRequisicaoDTO.quantidade());
         } else {
-            produtoFinded.setInitialStock(produtoFinded.getInitialStock() + updateMovementStockDTO.quantity());
-            estoqueFinded.setQuantityProduct(estoqueFinded.getQuantityProduct() + updateMovementStockDTO.quantity());
+            estoqueEncontrado.setQuantidade(estoqueEncontrado.getQuantidade() + movimentacaoEstoqueRequisicaoDTO.quantidade());
         }
 
 
-        stockMovementExist.setProduto(produtoFinded);
-        stockMovementExist.setType(updateMovementStockDTO.type());
-        stockMovementExist.setQuantityMovement(updateMovementStockDTO.quantity());
-        stockMovementExist.setUpdateAt(Instant.now());
+        movimentacaoEstoqueEncontrada.setProduto(produtoEncontrado);
+        movimentacaoEstoqueEncontrada.setTipo(movimentacaoEstoqueRequisicaoDTO.tipo());
+        movimentacaoEstoqueEncontrada.setQuantidade(movimentacaoEstoqueRequisicaoDTO.quantidade());
 
-        repositoryProduto.save(produtoFinded);
-        repositoryEstoque.save(estoqueFinded);
+        repositoryProduto.save(produtoEncontrado);
+        repositoryEstoque.save(estoqueEncontrado);
 
-        return mapper.entityToDto(repositoryMovimentacaoEstoque.save(stockMovementExist));
+        return mapper.entityToDto(repositoryMovimentacaoEstoque.save(movimentacaoEstoqueEncontrada));
     }
 }

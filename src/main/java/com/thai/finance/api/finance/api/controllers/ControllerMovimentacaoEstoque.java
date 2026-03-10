@@ -1,9 +1,10 @@
 package com.thai.finance.api.finance.api.controllers;
 
-import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.ResponseMovementStockDTO;
-import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.UpdateMovementStockDTO;
+import com.thai.finance.api.finance.api.domain.dtos.MovimentacaoEstoqueDTO.MovimentacaoEstoqueRequisicaoDTO;
+import com.thai.finance.api.finance.api.domain.dtos.MovimentacaoEstoqueDTO.MovimentacaoEstoqueRespostaDTO;
 import com.thai.finance.api.finance.api.services.ServiceMovimentacaoEstoque;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -13,35 +14,37 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/stockmovement")
+@RequestMapping("movimentacao-estoque")
+@RequiredArgsConstructor
 public class ControllerMovimentacaoEstoque {
     private final ServiceMovimentacaoEstoque serviceMovimentacaoEstoque;
 
-    public ControllerMovimentacaoEstoque(ServiceMovimentacaoEstoque serviceMovimentacaoEstoque) {
-        this.serviceMovimentacaoEstoque = serviceMovimentacaoEstoque;
-    }
+
     @PostMapping
-    public ResponseEntity<ResponseMovementStockDTO> createStockMovement(@RequestBody @Valid com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.MovimentacaoEstoqueRequisicaoDTO movimentacaoEstoqueRequisicaoDTO) {
+    public ResponseEntity<MovimentacaoEstoqueRespostaDTO> salvarMovimentacaoEstoque(@RequestBody @Valid MovimentacaoEstoqueRequisicaoDTO movimentacaoEstoqueRequisicaoDTO) {
+
+        var estoqueCriado = serviceMovimentacaoEstoque.salvar(movimentacaoEstoqueRequisicaoDTO);
+
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{id}")
-                .buildAndExpand(movimentacaoEstoqueRequisicaoDTO.productId())
+                .buildAndExpand(estoqueCriado.id())
                 .toUri();
 
-         return  ResponseEntity.created(location).body( serviceMovimentacaoEstoque.createStockMovement(movimentacaoEstoqueRequisicaoDTO));
+         return  ResponseEntity.created(location).body(estoqueCriado );
     }
     @GetMapping
-    public ResponseEntity<List<ResponseMovementStockDTO>> allStockMovements() {
-        return  ResponseEntity.ok().body(serviceMovimentacaoEstoque.allStockMovements());
+    public ResponseEntity<List<MovimentacaoEstoqueRespostaDTO>> obterEstoques() {
+        return  ResponseEntity.ok().body(serviceMovimentacaoEstoque.obter());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStockMovement(@PathVariable("id") UUID stockMovementId) {
-        serviceMovimentacaoEstoque.deleteStockMovementById(stockMovementId);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> removerEstoque(@PathVariable("id") UUID movimentacaoEstoque_id) {
+        serviceMovimentacaoEstoque.remover(movimentacaoEstoque_id);
         return ResponseEntity.noContent().build();
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<ResponseMovementStockDTO> putStockMovement(@PathVariable("id") UUID stockMovementId, @RequestBody @Valid UpdateMovementStockDTO updateMovementStockDTO) {
-        return ResponseEntity.ok().body(serviceMovimentacaoEstoque.updateStockMovement(stockMovementId, updateMovementStockDTO));
+    @PutMapping("{id}")
+    public ResponseEntity<MovimentacaoEstoqueRespostaDTO> atualizarMovimentacaoEstoque(@PathVariable("id") UUID movimentacaoEstoque_id, @RequestBody @Valid MovimentacaoEstoqueRequisicaoDTO movimentacaoEstoqueRequisicaoDTO) {
+        return ResponseEntity.ok().body(serviceMovimentacaoEstoque.atualizar(movimentacaoEstoque_id, movimentacaoEstoqueRequisicaoDTO));
     }
  }

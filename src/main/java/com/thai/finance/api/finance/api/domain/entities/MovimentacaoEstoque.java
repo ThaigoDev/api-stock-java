@@ -33,14 +33,14 @@ public class MovimentacaoEstoque {
     @Column
     private Integer quantidade;
 
+    @Column
+    private String motivo;
+
     @CreatedDate
     private LocalDateTime criado_em;
 
     @LastModifiedDate
-    private Instant data_movimentacao;
-
-    @Column
-    private String motivo;
+    private LocalDateTime data_movimentacao;
 
     public MovimentacaoEstoque() {
     }
