@@ -1,6 +1,5 @@
 package com.thai.finance.api.finance.api.services;
 
-import com.thai.finance.api.finance.api.domain.dtos.supplierDTO.CreateSupplierDTO;
 import com.thai.finance.api.finance.api.domain.dtos.supplierDTO.ResponseSupplierDTO;
 import com.thai.finance.api.finance.api.domain.dtos.supplierDTO.UpdateSupplierDTO;
 import com.thai.finance.api.finance.api.mapper.SupplierMapper;
@@ -22,9 +21,9 @@ public class ServiceFornecedor {
         this.supplierMapper = supplierMapper;
     }
 
-    public ResponseSupplierDTO createSupplier(CreateSupplierDTO createSupplierDTO) {
+    public ResponseSupplierDTO createSupplier(com.thai.finance.api.finance.api.domain.dtos.supplierDTO.FornecedorRequisicaoDTO fornecedorRequisicaoDTO) {
 
-        var supplierEntityConverted = supplierMapper.EntityResponseToDTO(repositoryFornecedor.save(supplierMapper.CreateDtoToEntity(createSupplierDTO)));
+        var supplierEntityConverted = supplierMapper.EntityResponseToDTO(repositoryFornecedor.save(supplierMapper.CreateDtoToEntity(fornecedorRequisicaoDTO)));
         return supplierEntityConverted;
     }
 

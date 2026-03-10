@@ -1,6 +1,5 @@
 package com.thai.finance.api.finance.api.controllers;
 
-import com.thai.finance.api.finance.api.domain.dtos.supplierDTO.CreateSupplierDTO;
 import com.thai.finance.api.finance.api.domain.dtos.supplierDTO.ResponseSupplierDTO;
 import com.thai.finance.api.finance.api.domain.dtos.supplierDTO.UpdateSupplierDTO;
 import com.thai.finance.api.finance.api.services.ServiceFornecedor;
@@ -23,8 +22,8 @@ public class ControllerFornecedor {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseSupplierDTO> createSupplier(@RequestBody @Valid CreateSupplierDTO createSupplierDTO) {
-        var createdSupplier  =  serviceFornecedor.createSupplier(createSupplierDTO);
+    public ResponseEntity<ResponseSupplierDTO> createSupplier(@RequestBody @Valid com.thai.finance.api.finance.api.domain.dtos.supplierDTO.FornecedorRequisicaoDTO fornecedorRequisicaoDTO) {
+        var createdSupplier  =  serviceFornecedor.createSupplier(fornecedorRequisicaoDTO);
         URI location  = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("{id}")
                 .buildAndExpand(createdSupplier.id())

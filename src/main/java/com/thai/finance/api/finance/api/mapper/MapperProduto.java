@@ -7,15 +7,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface MapperProduct {
+public interface MapperProduto {
 
- @Mapping(target = "categoryId.id" , source = "categoryId")
- @Mapping(target = "supplier.id" , source = "supplierId")
- @Mapping(target = "stock.id" , source = "stock")
+ @Mapping(target = "categoria.id" , source = "categoria_id")
+ @Mapping(target = "fornecedor.id" , source = "fornecedor_id")
  Produto dtoToEntity(ProdutoRequisicaoDTO produtoRequisicaoDTO);
 
- @Mapping(target = "categoryId", source = "categoryId.id")
- @Mapping(target = "supplierId", source = "supplier.id")
- @Mapping(target = "stock", source = "stock.id")
+ @Mapping(target = "categoria_id", source = "categoria.id")
+ @Mapping(target = "fornecedor_id", source = "fornecedor.id")
  ProdutoRespostaDTO entityToDTO(Produto produto);
 }

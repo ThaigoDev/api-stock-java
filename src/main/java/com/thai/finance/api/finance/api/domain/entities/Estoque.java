@@ -24,7 +24,7 @@ public class Estoque {
 
     @OneToOne
     @JoinColumn(nullable = true)
-    private Produto produto_id;
+    private Produto produto;
 
     @Column(name= "QUANTITY")
     private Integer quantidade;
@@ -37,7 +37,7 @@ public class Estoque {
 
     public Estoque(UUID id, Produto produto, Integer quantityProduct) {
         this.id = id;
-        this.produto_id = produto;
+        this.produto = produto;
         this.quantidade = quantityProduct;
     }
 }

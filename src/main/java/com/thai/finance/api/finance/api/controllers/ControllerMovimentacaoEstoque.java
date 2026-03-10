@@ -1,6 +1,5 @@
 package com.thai.finance.api.finance.api.controllers;
 
-import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.CreateStockMovementDTO;
 import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.ResponseMovementStockDTO;
 import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.UpdateMovementStockDTO;
 import com.thai.finance.api.finance.api.services.ServiceMovimentacaoEstoque;
@@ -22,14 +21,14 @@ public class ControllerMovimentacaoEstoque {
         this.serviceMovimentacaoEstoque = serviceMovimentacaoEstoque;
     }
     @PostMapping
-    public ResponseEntity<ResponseMovementStockDTO> createStockMovement(@RequestBody @Valid CreateStockMovementDTO createStockMovementDTO) {
+    public ResponseEntity<ResponseMovementStockDTO> createStockMovement(@RequestBody @Valid com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.MovimentacaoEstoqueRequisicaoDTO movimentacaoEstoqueRequisicaoDTO) {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{id}")
-                .buildAndExpand(createStockMovementDTO.productId())
+                .buildAndExpand(movimentacaoEstoqueRequisicaoDTO.productId())
                 .toUri();
 
-         return  ResponseEntity.created(location).body( serviceMovimentacaoEstoque.createStockMovement(createStockMovementDTO));
+         return  ResponseEntity.created(location).body( serviceMovimentacaoEstoque.createStockMovement(movimentacaoEstoqueRequisicaoDTO));
     }
     @GetMapping
     public ResponseEntity<List<ResponseMovementStockDTO>> allStockMovements() {

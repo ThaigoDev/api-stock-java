@@ -1,13 +1,12 @@
 package com.thai.finance.api.finance.api.services;
 
-import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.CreateStockMovementDTO;
 import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.ResponseMovementStockDTO;
 import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.UpdateMovementStockDTO;
 import com.thai.finance.api.finance.api.domain.entities.Produto;
 import com.thai.finance.api.finance.api.domain.entities.Estoque;
 import com.thai.finance.api.finance.api.domain.entities.MovimentacaoEstoque;
 import com.thai.finance.api.finance.api.domain.enums.MovementType;
-import com.thai.finance.api.finance.api.mapper.MapperStockMovement;
+import com.thai.finance.api.finance.api.mapper.MapperMovimentacaoEstoque;
 import com.thai.finance.api.finance.api.mapper.StockMovementMapper;
 import com.thai.finance.api.finance.api.respository.RepositoryProduto;
 import com.thai.finance.api.finance.api.respository.RepositoryMovimentacaoEstoque;
@@ -28,28 +27,28 @@ public class ServiceMovimentacaoEstoque {
     private final StockMovementMapper stockMovementMapper;
     private final RepositoryProduto repositoryProduto;
     private final RepositoryEstoque repositoryEstoque;
-    private final MapperStockMovement mapper;
+    private final MapperMovimentacaoEstoque mapper;
 
-    public ResponseMovementStockDTO createStockMovement(CreateStockMovementDTO createStockMovementDTO) {
-        if (createStockMovementDTO.productId() == null) {
+    public ResponseMovementStockDTO createStockMovement(com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.MovimentacaoEstoqueRequisicaoDTO movimentacaoEstoqueRequisicaoDTO) {
+        if (movimentacaoEstoqueRequisicaoDTO.productId() == null) {
             throw new IllegalArgumentException("priductId is obrigatory");
         }
 
-        Produto produtoFinded = repositoryProduto.findById(createStockMovementDTO.productId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product Not Found"));
-        MovimentacaoEstoque stockMovementConverted = mapper.dtoToEntity(createStockMovementDTO);
+        Produto produtoFinded = repositoryProduto.findById(movimentacaoEstoqueRequisicaoDTO.productId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product Not Found"));
+        MovimentacaoEstoque stockMovementConverted = mapper.dtoToEntity(movimentacaoEstoqueRequisicaoDTO);
 
         Estoque estoqueFinded = repositoryEstoque.findByProduct_Id(produtoFinded.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stock Not Found"));
 
-        if (createStockMovementDTO.type() == MovementType.OUT) {
-            if (createStockMovementDTO.quantity() >= produtoFinded.getMinimum_stock()) {
+        if (movimentacaoEstoqueRequisicaoDTO.type() == MovementType.OUT) {
+            if (movimentacaoEstoqueRequisicaoDTO.quantity() >= produtoFinded.getMinimum_stock()) {
                 throw new IllegalArgumentException("not authorized the transaction");
             }
 
-            produtoFinded.setInitialStock(produtoFinded.getInitialStock() - createStockMovementDTO.quantity());
-            estoqueFinded.setQuantityProduct(estoqueFinded.getQuantityProduct() - createStockMovementDTO.quantity());
+            produtoFinded.setInitialStock(produtoFinded.getInitialStock() - movimentacaoEstoqueRequisicaoDTO.quantity());
+            estoqueFinded.setQuantityProduct(estoqueFinded.getQuantityProduct() - movimentacaoEstoqueRequisicaoDTO.quantity());
         } else {
-            produtoFinded.setInitialStock(produtoFinded.getInitialStock() + createStockMovementDTO.quantity());
-            estoqueFinded.setQuantityProduct(estoqueFinded.getQuantityProduct() + createStockMovementDTO.quantity());
+            produtoFinded.setInitialStock(produtoFinded.getInitialStock() + movimentacaoEstoqueRequisicaoDTO.quantity());
+            estoqueFinded.setQuantityProduct(estoqueFinded.getQuantityProduct() + movimentacaoEstoqueRequisicaoDTO.quantity());
         }
         repositoryProduto.save(produtoFinded);
         repositoryEstoque.save(estoqueFinded);

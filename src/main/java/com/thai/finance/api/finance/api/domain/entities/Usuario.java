@@ -40,8 +40,8 @@ public class Usuario {
 
     private Set<Funcao> funcoes;
 
-    public boolean isLoginCorrect(LoginRequisicaoDTO loginRequest, PasswordEncoder passwordEncoder) {
-        return passwordEncoder.matches(loginRequest.password(), this.senha);
+    public boolean isLoginCorrect(LoginRequisicaoDTO loginRequisicaoDTO, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(loginRequisicaoDTO.senha(), this.senha);
     }
 
 

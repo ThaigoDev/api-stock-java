@@ -2,12 +2,11 @@ package com.thai.finance.api.finance.api.services;
 
 import com.thai.finance.api.finance.api.domain.dtos.ProdutoDTO.ProdutoRequisicaoDTO;
 import com.thai.finance.api.finance.api.domain.dtos.ProdutoDTO.ProdutoRespostaDTO;
-import com.thai.finance.api.finance.api.domain.dtos.ProdutoDTO.EditarProdutoRequisicaoDTO;
 import com.thai.finance.api.finance.api.domain.entities.Categoria;
 import com.thai.finance.api.finance.api.domain.entities.Estoque;
 import com.thai.finance.api.finance.api.domain.entities.Produto;
 import com.thai.finance.api.finance.api.domain.entities.Fornecedor;
-import com.thai.finance.api.finance.api.mapper.MapperProduct;
+import com.thai.finance.api.finance.api.mapper.MapperProduto;
 import com.thai.finance.api.finance.api.respository.RepositoryCategoria;
 import com.thai.finance.api.finance.api.respository.RepositoryProduto;
 import com.thai.finance.api.finance.api.respository.RepositoryEstoque;
@@ -29,15 +28,15 @@ public class ServiceProduto {
     private final RepositoryCategoria repositoryCategoria;
     private final RepositoryFornecedor repositoryFornecedor;
     private final RepositoryEstoque repositoryEstoque;
-    private final MapperProduct mapper;
+    private final MapperProduto mapper;
 
 
     public ProdutoRespostaDTO createProduct(ProdutoRequisicaoDTO produtoRequisicaoDTO) {
-        Categoria categoriaFinded = repositoryCategoria.findById(produtoRequisicaoDTO.categoryId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
-        Fornecedor fornecedorFinded = repositoryFornecedor.findById(produtoRequisicaoDTO.supplierId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found"));
+        Categoria categoriaFinded = repositoryCategoria.findById(produtoRequisicaoDTO.categoria_id()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
+        Fornecedor fornecedorFinded = repositoryFornecedor.findById(produtoRequisicaoDTO.fornecedor_id()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found"));
 
         var ProductEntity = mapper.dtoToEntity(produtoRequisicaoDTO);
-        ProductEntity.setSupplier(fornecedorFinded);
+        ProductEntity.setFornecedor(fornecedorFinded);
         ProductEntity.setCategoryId(categoriaFinded);
         var productSaved = repositoryProduto.save(ProductEntity);
         Estoque estoque = new Estoque(null, productSaved, ProductEntity.getInitialStock());

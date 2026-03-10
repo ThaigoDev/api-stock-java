@@ -30,13 +30,13 @@ public class Produto {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Categoria categoria_id;
+    private Categoria categoria;
 
     private BigInteger preco;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Fornecedor fornecedor_id;
+    private Fornecedor fornecedor;
 
    @Column
     private boolean ativo = true;

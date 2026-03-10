@@ -1,6 +1,5 @@
 package com.thai.finance.api.finance.api.mapper;
 
-import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.CreateStockMovementDTO;
 import com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.ResponseMovementStockDTO;
 import com.thai.finance.api.finance.api.domain.entities.MovimentacaoEstoque;
 import org.springframework.stereotype.Component;
@@ -11,7 +10,7 @@ public class StockMovementMapper {
        return new ResponseMovementStockDTO(stockMovement.getId(), stockMovement.getProduto().getId(), stockMovement.getType(), stockMovement.getQuantityMovement());
 
     }
-    public MovimentacaoEstoque dtoCreateMovementStocktoEntityStockMovement(CreateStockMovementDTO createStockMovementDTO) {
-        return  new MovimentacaoEstoque(null, null, createStockMovementDTO.type(),createStockMovementDTO.quantity());
+    public MovimentacaoEstoque dtoCreateMovementStocktoEntityStockMovement(com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO.MovimentacaoEstoqueRequisicaoDTO movimentacaoEstoqueRequisicaoDTO) {
+        return  new MovimentacaoEstoque(null, null, movimentacaoEstoqueRequisicaoDTO.type(), movimentacaoEstoqueRequisicaoDTO.quantity());
     }
 }

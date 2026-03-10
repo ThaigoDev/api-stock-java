@@ -2,7 +2,7 @@ package com.thai.finance.api.finance.api.services;
 
 import com.thai.finance.api.finance.api.domain.dtos.CategoriaDTO.CategoriaRequisicaoDTO;
 import com.thai.finance.api.finance.api.domain.dtos.CategoriaDTO.CategoriaRespostaDTO;
-import com.thai.finance.api.finance.api.mapper.MapperCategory;
+import com.thai.finance.api.finance.api.mapper.MapperCategoria;
 import com.thai.finance.api.finance.api.respository.RepositoryCategoria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,17 +16,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ServiceCategoria {
     private final RepositoryCategoria repositoryCategoria;
-    private final MapperCategory mapper;
+    private final MapperCategoria mapper;
 
 
-    public CategoriaRespostaDTO createCategory(CategoriaRequisicaoDTO categoriaRequisicaoDTO) {
+    public CategoriaRespostaDTO salvar(CategoriaRequisicaoDTO categoriaRequisicaoDTO) {
 
         return mapper.entityToDTO(repositoryCategoria.save(mapper.dtoToEntity(categoriaRequisicaoDTO)));
 
 
     }
 
-    public List<CategoriaRespostaDTO> getAllCategories() {
+    public List<CategoriaRespostaDTO> obter() {
         return repositoryCategoria
                 .findAll()
                 .stream()
@@ -34,9 +34,9 @@ public class ServiceCategoria {
                 .toList();
     }
 
-    public void deleteCategoryById(UUID id) {
-        var categoryExist = repositoryCategoria.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
-        repositoryCategoria.deleteById(categoryExist.getId());
+    public void remover(UUID categoria_id) {
+        var categoriaEncontrada = repositoryCategoria.findById(categoria_id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
+        repositoryCategoria.deleteById(categoriaEncontrada.getId());
 
     }
 }

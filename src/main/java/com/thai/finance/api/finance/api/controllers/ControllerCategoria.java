@@ -4,6 +4,7 @@ import com.thai.finance.api.finance.api.domain.dtos.CategoriaDTO.CategoriaRequis
 import com.thai.finance.api.finance.api.domain.dtos.CategoriaDTO.CategoriaRespostaDTO;
 import com.thai.finance.api.finance.api.services.ServiceCategoria;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -13,31 +14,30 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/categories")
+@RequestMapping("categorias")
+@RequiredArgsConstructor
 public class ControllerCategoria {
-     private ServiceCategoria serviceCategoria;
-     public ControllerCategoria(ServiceCategoria serviceCategoria) {
-         this.serviceCategoria = serviceCategoria;
-     }
+     private final  ServiceCategoria serviceCategoria;
+
 
     @PostMapping
-    public ResponseEntity<CategoriaRespostaDTO> createCategory(@RequestBody @Valid CategoriaRequisicaoDTO categoriaRequisicaoDTO) {
-        var createdCategory =  serviceCategoria.createCategory(categoriaRequisicaoDTO);
+    public ResponseEntity<CategoriaRespostaDTO> criarCategoria(@RequestBody @Valid CategoriaRequisicaoDTO categoriaRequisicaoDTO) {
+        var categoriaCriada =  serviceCategoria.salvar(categoriaRequisicaoDTO);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{id}")
-                .buildAndExpand(createdCategory.id())
+                .buildAndExpand(categoriaCriada.id())
                 .toUri();
-        return ResponseEntity.created(location).body(createdCategory);
+        return ResponseEntity.created(location).body(categoriaCriada);
     };
      @GetMapping
-    public ResponseEntity<List<CategoriaRespostaDTO>> getAllCategories (){
-        var allCategories = serviceCategoria.getAllCategories();
-        return  ResponseEntity.ok(allCategories);
+    public ResponseEntity<List<CategoriaRespostaDTO>> obterCategorias (){
+        var categorias = serviceCategoria.obter();
+        return  ResponseEntity.ok(categorias);
      };
-     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable("id") UUID categoryId) {
-          serviceCategoria.deleteCategoryById(categoryId);
+     @DeleteMapping("{id}")
+    public ResponseEntity<Void> removerCategoria(@PathVariable("id") UUID categoria_id) {
+          serviceCategoria.remover(categoria_id);
           return ResponseEntity.noContent().build();
      }
 }

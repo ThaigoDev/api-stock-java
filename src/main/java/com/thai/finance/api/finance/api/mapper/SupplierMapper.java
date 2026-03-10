@@ -1,6 +1,5 @@
 package com.thai.finance.api.finance.api.mapper;
 
-import com.thai.finance.api.finance.api.domain.dtos.supplierDTO.CreateSupplierDTO;
 import com.thai.finance.api.finance.api.domain.dtos.supplierDTO.ResponseSupplierDTO;
 import com.thai.finance.api.finance.api.domain.entities.Fornecedor;
 import org.springframework.stereotype.Component;
@@ -13,8 +12,8 @@ public class SupplierMapper {
         return  entityConverted;
 
     };
-    public Fornecedor CreateDtoToEntity(CreateSupplierDTO createSupplierDTO) {
-         Fornecedor dtoFornecedorConvertedToEntity =  new Fornecedor( createSupplierDTO.name());
+    public Fornecedor CreateDtoToEntity(com.thai.finance.api.finance.api.domain.dtos.supplierDTO.FornecedorRequisicaoDTO fornecedorRequisicaoDTO) {
+         Fornecedor dtoFornecedorConvertedToEntity =  new Fornecedor( fornecedorRequisicaoDTO.name());
          return dtoFornecedorConvertedToEntity;
     }
 }

@@ -6,7 +6,7 @@ import com.thai.finance.api.finance.api.domain.entities.Categoria;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface MapperCategory {
+public interface MapperCategoria {
     Categoria dtoToEntity (CategoriaRequisicaoDTO categoriaRequisicaoDTO);
     CategoriaRespostaDTO entityToDTO (Categoria categoria);
 }

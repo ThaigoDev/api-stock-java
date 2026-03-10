@@ -1,5 +1,5 @@
 package com.thai.finance.api.finance.api.domain.enums;
 
-public enum TipoMovimentacaoEstooque {
+public enum TipoMovimentacaoEstoque {
     ENTRADA, SAINDA, AJUSTE
 }

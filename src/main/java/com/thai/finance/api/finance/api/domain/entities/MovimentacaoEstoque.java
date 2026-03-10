@@ -1,6 +1,6 @@
 package com.thai.finance.api.finance.api.domain.entities;
 
-import com.thai.finance.api.finance.api.domain.enums.MovementType;
+import com.thai.finance.api.finance.api.domain.enums.TipoMovimentacaoEstoque;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,10 +25,10 @@ public class MovimentacaoEstoque {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Produto produto_id;
+    private Produto produto;
 
     @Enumerated(EnumType.STRING)
-    private MovementType tipo;
+    private TipoMovimentacaoEstoque tipo;
 
     @Column
     private Integer quantidade;
@@ -45,9 +45,9 @@ public class MovimentacaoEstoque {
     public MovimentacaoEstoque() {
     }
 
-    public MovimentacaoEstoque(UUID id, Produto produto, MovementType tipo, Integer quantidade) {
+    public MovimentacaoEstoque(UUID id, Produto produto, TipoMovimentacaoEstoque tipo, Integer quantidade) {
         this.id = id;
-        this.produto_id = produto;
+        this.produto = produto;
         this.tipo = tipo;
         this.quantidade = quantidade;
     }
