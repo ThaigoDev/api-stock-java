@@ -1,9 +1,10 @@
 package com.thai.finance.api.finance.api.controllers;
 
-import com.thai.finance.api.finance.api.domain.dtos.supplierDTO.ResponseSupplierDTO;
-import com.thai.finance.api.finance.api.domain.dtos.supplierDTO.UpdateSupplierDTO;
+import com.thai.finance.api.finance.api.domain.dtos.FornecedorDTO.FornecedorRequisicaoDTO;
+import com.thai.finance.api.finance.api.domain.dtos.FornecedorDTO.FornecedorRespostaDTO;
 import com.thai.finance.api.finance.api.services.ServiceFornecedor;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -13,37 +14,34 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/supplier")
+@RequestMapping("fornecedores")
+@RequiredArgsConstructor
 public class ControllerFornecedor {
     private final ServiceFornecedor serviceFornecedor;
 
-    public ControllerFornecedor(ServiceFornecedor serviceFornecedor) {
-        this.serviceFornecedor = serviceFornecedor;
-    }
-
     @PostMapping
-    public ResponseEntity<ResponseSupplierDTO> createSupplier(@RequestBody @Valid com.thai.finance.api.finance.api.domain.dtos.supplierDTO.FornecedorRequisicaoDTO fornecedorRequisicaoDTO) {
-        var createdSupplier  =  serviceFornecedor.createSupplier(fornecedorRequisicaoDTO);
+    public ResponseEntity<FornecedorRespostaDTO> createSupplier(@RequestBody @Valid FornecedorRequisicaoDTO fornecedorRequisicaoDTO) {
+        var fornecedorCriado  =  serviceFornecedor.salvar(fornecedorRequisicaoDTO);
         URI location  = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("{id}")
-                .buildAndExpand(createdSupplier.id())
+                .buildAndExpand(fornecedorCriado.id())
                 .toUri();
-        return ResponseEntity.created(location).body(createdSupplier);
+        return ResponseEntity.created(location).body(fornecedorCriado);
     }
-    @GetMapping("/all")
-    public ResponseEntity<List<ResponseSupplierDTO>>  getAllSuppliers () {
-        var allSuppliers = serviceFornecedor.getAllSuppliers();
-        return ResponseEntity.ok(allSuppliers);
+    @GetMapping
+    public ResponseEntity<List<FornecedorRespostaDTO>>  obterFornecedores () {
+        var fornecedores = serviceFornecedor.obter();
+        return ResponseEntity.ok().body(fornecedores);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSupplier (@PathVariable("id")UUID supplierId) {
-         serviceFornecedor.deleteSupplierById(supplierId);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> removerFornecedor (@PathVariable("id")UUID fornecedor_id) {
+         serviceFornecedor.remover(fornecedor_id);
          return  ResponseEntity.noContent().build();
 
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> putSupplier(@PathVariable("id") UUID supplierId, @RequestBody @Valid UpdateSupplierDTO updateSupplierDTO) {
-        serviceFornecedor.updateSupplier(supplierId,updateSupplierDTO);
+    @PutMapping("{id}")
+    public ResponseEntity<Void> atualizarFornecedor(@PathVariable("id") UUID fornecedor_id, @RequestBody @Valid FornecedorRequisicaoDTO fornecedorRequisicaoDTO) {
+        serviceFornecedor.atualizar(fornecedor_id,fornecedorRequisicaoDTO);
         return ResponseEntity.noContent().build();
     };
 }
