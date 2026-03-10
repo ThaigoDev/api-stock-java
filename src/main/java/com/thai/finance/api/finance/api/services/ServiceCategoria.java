@@ -21,7 +21,7 @@ public class ServiceCategoria {
 
     public CategoriaRespostaDTO salvar(CategoriaRequisicaoDTO categoriaRequisicaoDTO) {
 
-        return mapper.entityToDTO(repositoryCategoria.save(mapper.dtoToEntity(categoriaRequisicaoDTO)));
+        return mapper.paraDTO(repositoryCategoria.save(mapper.paraEntidade(categoriaRequisicaoDTO)));
 
 
     }
@@ -30,7 +30,7 @@ public class ServiceCategoria {
         return repositoryCategoria
                 .findAll()
                 .stream()
-                .map(mapper::entityToDTO)
+                .map(mapper::paraDTO)
                 .toList();
     }
 

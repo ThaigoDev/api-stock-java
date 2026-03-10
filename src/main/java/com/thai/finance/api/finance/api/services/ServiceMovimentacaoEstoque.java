@@ -7,7 +7,6 @@ import com.thai.finance.api.finance.api.domain.entities.Estoque;
 import com.thai.finance.api.finance.api.domain.entities.MovimentacaoEstoque;
 import com.thai.finance.api.finance.api.domain.enums.TipoMovimentacaoEstoque;
 import com.thai.finance.api.finance.api.mapper.MapperMovimentacaoEstoque;
-import com.thai.finance.api.finance.api.mapper.StockMovementMapper;
 import com.thai.finance.api.finance.api.respository.RepositoryProduto;
 import com.thai.finance.api.finance.api.respository.RepositoryMovimentacaoEstoque;
 import com.thai.finance.api.finance.api.respository.RepositoryEstoque;
@@ -22,7 +21,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ServiceMovimentacaoEstoque {
     private final RepositoryMovimentacaoEstoque repositoryMovimentacaoEstoque;
-    private final StockMovementMapper stockMovementMapper;
     private final RepositoryProduto repositoryProduto;
     private final RepositoryEstoque repositoryEstoque;
     private final MapperMovimentacaoEstoque mapper;
@@ -33,7 +31,7 @@ public class ServiceMovimentacaoEstoque {
         }
 
         Produto produtoEncontrado = repositoryProduto.findById(movimentacaoEstoqueRequisicaoDTO.produto()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
-        MovimentacaoEstoque movimentacaoEstoqueEntidade = mapper.dtoToEntity(movimentacaoEstoqueRequisicaoDTO);
+        MovimentacaoEstoque movimentacaoEstoqueEntidade = mapper.paraEntidade(movimentacaoEstoqueRequisicaoDTO);
 
         Estoque estoqueEncontrado = repositoryEstoque.findByProduct_Id(produtoEncontrado.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Estoque não encontrado"));
 
@@ -50,11 +48,11 @@ public class ServiceMovimentacaoEstoque {
         repositoryEstoque.save(estoqueEncontrado);
 
         movimentacaoEstoqueEntidade.setProduto(produtoEncontrado);
-        return mapper.entityToDto(repositoryMovimentacaoEstoque.save(movimentacaoEstoqueEntidade));
+        return mapper.paraDTO(repositoryMovimentacaoEstoque.save(movimentacaoEstoqueEntidade));
     }
 
     public List<MovimentacaoEstoqueRespostaDTO> obter() {
-        return repositoryMovimentacaoEstoque.findAll().stream().map(mapper::entityToDto).toList();
+        return repositoryMovimentacaoEstoque.findAll().stream().map(mapper::paraDTO).toList();
     }
 
     public void remover(UUID movimentacaoEstoque_id) {
@@ -83,6 +81,6 @@ public class ServiceMovimentacaoEstoque {
         repositoryProduto.save(produtoEncontrado);
         repositoryEstoque.save(estoqueEncontrado);
 
-        return mapper.entityToDto(repositoryMovimentacaoEstoque.save(movimentacaoEstoqueEncontrada));
+        return mapper.paraDTO(repositoryMovimentacaoEstoque.save(movimentacaoEstoqueEncontrada));
     }
 }

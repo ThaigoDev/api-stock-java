@@ -25,16 +25,16 @@ public class AdminUserConfig  implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String ...args) throws  Exception {
-        var RoleAdmin = repositoryFuncao.findByName(Funcao.Values.ADMIN.name());
-        var userAdmin  = repositoryUsuario.findByEmail("admin@admin.com");
-      userAdmin.ifPresentOrElse((usuario)-> System.out.println("Admin exist."), ()-> {
-          var user = new Usuario();
-          user.setUsername("admin");
-          user.setEmail("admin@admin.com");
-          user.setPassword( passwordEncoder.encode("admin331400"));
-          user.setFuncaos(Set.of(RoleAdmin));
+        var FuncaoAdmin = repositoryFuncao.findByName(Funcao.Values.ADMIN.name());
+        var usuarioAdmin  = repositoryUsuario.findByEmail("admin@admin.com");
+      usuarioAdmin.ifPresentOrElse((usuario)-> System.out.println("Usuário admin já existe"), ()-> {
+          var userio = new Usuario();
+          userio.setNome("admin");
+          userio.setEmail("admin@admin.com");
+          userio.setSenha( passwordEncoder.encode("admin331400"));
+          userio.setFuncoes(Set.of(FuncaoAdmin));
 
-          repositoryUsuario.save(user);
+          repositoryUsuario.save(userio);
 
       });
     }

@@ -11,9 +11,9 @@ public interface MapperProduto {
 
  @Mapping(target = "categoria.id" , source = "categoria_id")
  @Mapping(target = "fornecedor.id" , source = "fornecedor_id")
- Produto dtoToEntity(ProdutoRequisicaoDTO produtoRequisicaoDTO);
+ Produto paraEntidade(ProdutoRequisicaoDTO produtoRequisicaoDTO);
 
  @Mapping(target = "categoria_id", source = "categoria.id")
  @Mapping(target = "fornecedor_id", source = "fornecedor.id")
- ProdutoRespostaDTO entityToDTO(Produto produto);
+ ProdutoRespostaDTO paraDTO(Produto produto);
 }

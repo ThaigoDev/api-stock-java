@@ -27,7 +27,6 @@ public class ServiceProduto {
     private final RepositoryProduto repositoryProduto;
     private final RepositoryCategoria repositoryCategoria;
     private final RepositoryFornecedor repositoryFornecedor;
-    private final RepositoryEstoque repositoryEstoque;
     private final MapperProduto mapper;
 
 
@@ -35,18 +34,18 @@ public class ServiceProduto {
         Categoria categoriaEncontrada = repositoryCategoria.findById(produtoRequisicaoDTO.categoria_id()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria Encontrada"));
         Fornecedor fornecedorEncontrado = repositoryFornecedor.findById(produtoRequisicaoDTO.fornecedor_id()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fornecedor Encontrado"));
 
-        var EntidadeProduto = mapper.dtoToEntity(produtoRequisicaoDTO);
+        var EntidadeProduto = mapper.paraEntidade(produtoRequisicaoDTO);
         EntidadeProduto.setFornecedor(fornecedorEncontrado);
         EntidadeProduto.setCategoria(categoriaEncontrada);
         var produtoSalvo = repositoryProduto.save(EntidadeProduto);
         Estoque EntidadeEstoque = new Estoque(null, produtoSalvo, EntidadeProduto.getEstoque_minimo());
 
-        return mapper.entityToDTO(produtoSalvo);
+        return mapper.paraDTO(produtoSalvo);
 
     }
 
     public List<ProdutoRespostaDTO> obter() {
-        return repositoryProduto.findAll().stream().map(mapper::entityToDTO).toList();
+        return repositoryProduto.findAll().stream().map(mapper::paraDTO).toList();
     }
 
     public void atualizar(UUID produto_id, ProdutoRequisicaoDTO produtoRequisicaoDTO) {
@@ -83,6 +82,6 @@ public class ServiceProduto {
 
         Example<Produto> produtoExemplo = Example.of(ExemploProduto, matcher);
 
-        return repositoryProduto.findAll(produtoExemplo).stream().map(mapper::entityToDTO).toList();
+        return repositoryProduto.findAll(produtoExemplo).stream().map(mapper::paraDTO).toList();
     }
 }

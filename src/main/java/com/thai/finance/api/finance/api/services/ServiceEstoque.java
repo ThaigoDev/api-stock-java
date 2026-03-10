@@ -2,7 +2,7 @@ package com.thai.finance.api.finance.api.services;
 
 import com.thai.finance.api.finance.api.domain.dtos.EstoqueDTO.EstoqueRequisicaoDTO;
 import com.thai.finance.api.finance.api.domain.dtos.EstoqueDTO.EstoqueRespostaDTO;
-import com.thai.finance.api.finance.api.mapper.StockMapper;
+import com.thai.finance.api.finance.api.mapper.MapperEstoque;
 import com.thai.finance.api.finance.api.respository.RepositoryEstoque;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,17 +16,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ServiceEstoque {
     private final RepositoryEstoque stockRepository;
-    private final StockMapper stockMapper;
+    private final MapperEstoque mapper;
 
     public EstoqueRespostaDTO salvar(EstoqueRequisicaoDTO estoqueRequisicaoDTO) {
-        return stockMapper.entityToResponseDTO(stockRepository.save(stockMapper.createStockDTOtoEntity(estoqueRequisicaoDTO)));
+        return mapper.paraDTO(stockRepository.save(mapper.paraEntidade(estoqueRequisicaoDTO)));
     }
 
     public List<EstoqueRespostaDTO> obter() {
-        return stockRepository.findAll().stream().map(stockMapper::entityToResponseDTO).toList();
+        return stockRepository.findAll().stream().map(mapper::paraDTO).toList();
     }
 
     public EstoqueRespostaDTO obterPorId(UUID estoque_id) {
-        return stockMapper.entityToResponseDTO(stockRepository.findById(estoque_id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Estoque não encontrado")));
+        return mapper.paraDTO(stockRepository.findById(estoque_id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Estoque não encontrado")));
     }
 }

@@ -2,7 +2,7 @@ package com.thai.finance.api.finance.api.services;
 
 import com.thai.finance.api.finance.api.domain.dtos.FornecedorDTO.FornecedorRequisicaoDTO;
 import com.thai.finance.api.finance.api.domain.dtos.FornecedorDTO.FornecedorRespostaDTO;
-import com.thai.finance.api.finance.api.mapper.SupplierMapper;
+import com.thai.finance.api.finance.api.mapper.MapperFornecedor;
 import com.thai.finance.api.finance.api.respository.RepositoryFornecedor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,19 +16,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ServiceFornecedor {
     private final RepositoryFornecedor repositoryFornecedor;
-    private final SupplierMapper supplierMapper;
+    private final MapperFornecedor mapper;
 
 
     public FornecedorRespostaDTO salvar(FornecedorRequisicaoDTO fornecedorRequisicaoDTO) {
 
-        var fornecedorConvertido = supplierMapper.EntityResponseToDTO(repositoryFornecedor.save(supplierMapper.CreateDtoToEntity(fornecedorRequisicaoDTO)));
+        var fornecedorConvertido = mapper.paraDTO(repositoryFornecedor.save(mapper.paraEntidade(fornecedorRequisicaoDTO)));
         return fornecedorConvertido;
     }
 
     ;
 
     public List<FornecedorRespostaDTO> obter() {
-        return repositoryFornecedor.findAll().stream().map(supplierMapper::EntityResponseToDTO).toList();
+        return repositoryFornecedor.findAll().stream().map(mapper::paraDTO).toList();
 
     }
 
