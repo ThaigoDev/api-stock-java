@@ -1,4 +1,4 @@
-package com.thai.finance.api.finance.api.domain.dtos.stockMovementDTO;
+package com.thai.finance.api.finance.api.domain.dtos.MovimentacaoEstoqueDTO;
 
 import com.thai.finance.api.finance.api.domain.enums.MovementType;
 

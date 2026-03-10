@@ -1,4 +1,4 @@
-package com.thai.finance.api.finance.api.domain.dtos.stockDTO;
+package com.thai.finance.api.finance.api.domain.dtos.EstoqueDTO;
 
 import com.thai.finance.api.finance.api.domain.entities.Produto;
 import jakarta.validation.constraints.NotNull;

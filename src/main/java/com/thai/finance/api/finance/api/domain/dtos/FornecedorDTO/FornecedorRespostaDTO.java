@@ -1,4 +1,4 @@
-package com.thai.finance.api.finance.api.domain.dtos.supplierDTO;
+package com.thai.finance.api.finance.api.domain.dtos.FornecedorDTO;
 
 import java.util.UUID;
 
