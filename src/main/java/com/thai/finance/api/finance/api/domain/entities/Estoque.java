@@ -34,9 +34,9 @@ public class Estoque {
     @LastModifiedDate
     private LocalDateTime ultima_atualizacao;
 
-    public Estoque(UUID id, Produto produto, Integer quantityProduct) {
+    public Estoque(UUID id, Produto produto, Integer quantidade) {
         this.id = id;
         this.produto = produto;
-        this.quantidade = quantityProduct;
+        this.quantidade = quantidade;
     }
 }

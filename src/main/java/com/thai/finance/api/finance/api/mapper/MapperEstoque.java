@@ -8,9 +8,9 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface MapperEstoque {
-    @Mapping(target = "produto.id", source = "produto")
+    @Mapping(target = "produto" , ignore = true )
     Estoque paraEntidade(EstoqueRequisicaoDTO estoqueRequisicaoDTO);
 
-    @Mapping(target = "produto", source = "produto.id")
+    @Mapping(target = "produto_id", source = "produto.id")
     EstoqueRespostaDTO paraDTO(Estoque estoque);
 }

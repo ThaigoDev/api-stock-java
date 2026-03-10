@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("movimentacoes-estoque")
+@RequestMapping("movimentacoesestoque")
 @RequiredArgsConstructor
 public class ControllerMovimentacaoEstoque {
     private final ServiceMovimentacaoEstoque serviceMovimentacaoEstoque;
@@ -23,15 +23,15 @@ public class ControllerMovimentacaoEstoque {
     @PostMapping
     public ResponseEntity<MovimentacaoEstoqueRespostaDTO> salvarMovimentacaoEstoque(@RequestBody @Valid MovimentacaoEstoqueRequisicaoDTO movimentacaoEstoqueRequisicaoDTO) {
 
-        var estoqueCriado = serviceMovimentacaoEstoque.salvar(movimentacaoEstoqueRequisicaoDTO);
+        var movimentacaoEstoqueCriada = serviceMovimentacaoEstoque.salvar(movimentacaoEstoqueRequisicaoDTO);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{id}")
-                .buildAndExpand(estoqueCriado.id())
+                .buildAndExpand(movimentacaoEstoqueCriada.id())
                 .toUri();
 
-         return  ResponseEntity.created(location).body(estoqueCriado);
+         return  ResponseEntity.created(location).body(movimentacaoEstoqueCriada);
     }
     @GetMapping
     public ResponseEntity<List<MovimentacaoEstoqueRespostaDTO>> obterMovimentacoesEstoques() {

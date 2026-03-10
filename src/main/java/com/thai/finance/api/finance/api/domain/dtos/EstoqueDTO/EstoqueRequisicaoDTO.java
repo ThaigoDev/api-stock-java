@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public record EstoqueRequisicaoDTO(
         @NotNull(message = "O campo 'produto' não pode ser null")
-        UUID produto,
+        UUID produto_id,
         @NotNull(message = "O campo 'quantidade' não pode ser null")
         Integer quantidade) {
 }
