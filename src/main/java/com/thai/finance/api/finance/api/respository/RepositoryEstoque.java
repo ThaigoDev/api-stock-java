@@ -7,5 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface RepositoryEstoque extends JpaRepository<Estoque, UUID> {
-    Optional<Estoque> findByProduct_Id(UUID productId);
+    Optional<Estoque> findByProduto(UUID productId);
 }

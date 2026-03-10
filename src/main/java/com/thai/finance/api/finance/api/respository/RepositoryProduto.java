@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface RepositoryProduto extends JpaRepository<Produto, UUID> {
-    List<Produto> findByNameProduct(String name);
+    List<Produto> findByNome(String nome);
 }

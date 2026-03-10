@@ -33,7 +33,7 @@ public class ServiceMovimentacaoEstoque {
         Produto produtoEncontrado = repositoryProduto.findById(movimentacaoEstoqueRequisicaoDTO.produto()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
         MovimentacaoEstoque movimentacaoEstoqueEntidade = mapper.paraEntidade(movimentacaoEstoqueRequisicaoDTO);
 
-        Estoque estoqueEncontrado = repositoryEstoque.findByProduct_Id(produtoEncontrado.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Estoque não encontrado"));
+        Estoque estoqueEncontrado = repositoryEstoque.findByProduto(produtoEncontrado.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Estoque não encontrado"));
 
         if (movimentacaoEstoqueRequisicaoDTO.tipo() == TipoMovimentacaoEstoque.SAIDA) {
             if (movimentacaoEstoqueRequisicaoDTO.quantidade() >= produtoEncontrado.getEstoque_minimo()) {
@@ -62,7 +62,7 @@ public class ServiceMovimentacaoEstoque {
     public MovimentacaoEstoqueRespostaDTO atualizar(UUID movimentacaoEstoque_id, MovimentacaoEstoqueRequisicaoDTO movimentacaoEstoqueRequisicaoDTO) {
         MovimentacaoEstoque movimentacaoEstoqueEncontrada = repositoryMovimentacaoEstoque.findById(movimentacaoEstoque_id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movimentação de Estoque não encontrada"));
         Produto produtoEncontrado = repositoryProduto.findById(movimentacaoEstoqueRequisicaoDTO.produto()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
-        Estoque estoqueEncontrado = repositoryEstoque.findByProduct_Id(produtoEncontrado.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Estoque não encontrado"));
+        Estoque estoqueEncontrado = repositoryEstoque.findByProduto(produtoEncontrado.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Estoque não encontrado"));
 
         if (movimentacaoEstoqueRequisicaoDTO.tipo() == TipoMovimentacaoEstoque.SAIDA) {
             if (movimentacaoEstoqueRequisicaoDTO.quantidade() >= produtoEncontrado.getEstoque_minimo()) {
