@@ -35,14 +35,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) {
-        http.authorizeHttpRequests( authorize -> authorize
-                .requestMatchers(HttpMethod.POST, "/auth").permitAll()
-                .requestMatchers(HttpMethod.POST,"/auth/signup").permitAll()
-                .anyRequest().authenticated()
+       return http.authorizeHttpRequests( authorize -> authorize
+                .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                .anyRequest().permitAll()
         ).csrf(csrf -> csrf.disable())
                 .oauth2ResourceServer( auth -> auth.jwt(Customizer.withDefaults()))
-                .sessionManagement( session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        return http.build();
+                .sessionManagement( session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+               .build();
     }
     @Bean
     public JwtEncoder jwtEncoder () {

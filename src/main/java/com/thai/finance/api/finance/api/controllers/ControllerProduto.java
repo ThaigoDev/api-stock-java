@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequestMapping("produtos")
 @RequiredArgsConstructor
 public class ControllerProduto {
-    private ServiceProduto serviceProduto;
+    private final ServiceProduto serviceProduto;
 
 
 

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("movimentacao-estoque")
+@RequestMapping("movimentacoes-estoque")
 @RequiredArgsConstructor
 public class ControllerMovimentacaoEstoque {
     private final ServiceMovimentacaoEstoque serviceMovimentacaoEstoque;
