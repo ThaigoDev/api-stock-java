@@ -41,6 +41,9 @@ public class SecurityConfig {
         ).csrf(csrf -> csrf.disable())
                 .oauth2ResourceServer( auth -> auth.jwt(Customizer.withDefaults()))
                 .sessionManagement( session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+               .oauth2Login(Customizer.withDefaults())
+               .httpBasic(Customizer.withDefaults())
+               .formLogin(Customizer.withDefaults())
                .build();
     }
     @Bean
