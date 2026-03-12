@@ -1,5 +1,6 @@
 package com.thai.finance.api.finance.api.security;
 
+import com.thai.finance.api.finance.api.domain.entities.Funcao;
 import com.thai.finance.api.finance.api.domain.entities.Usuario;
 import com.thai.finance.api.finance.api.services.ServiceUsuario;
 import jakarta.servlet.ServletException;
@@ -14,7 +15,10 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -32,6 +36,12 @@ public class ManipuladorLoginSocial extends SavedRequestAwareAuthenticationSucce
         if(usuario.isPresent()) {
             AutenticacaoCustomizada autenticacaoCustomizada = new AutenticacaoCustomizada(usuario.get());
             SecurityContextHolder.getContext().setAuthentication(autenticacaoCustomizada);
+        }else {
+            Usuario usuarioCriado = new Usuario();
+            usuarioCriado.setNome(oAuth2Usuario.getName());
+            usuarioCriado.setEmail(email);
+            usuarioCriado.setSenha("123");
+            usuarioCriado.setFuncoes(Set.of());
         }
 
         super.onAuthenticationSuccess(request, response, authentication);
