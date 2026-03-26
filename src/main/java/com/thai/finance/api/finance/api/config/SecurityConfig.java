@@ -39,7 +39,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain (HttpSecurity http, ManipuladorLoginSocial manipuladorLoginSocial) {
        return http.authorizeHttpRequests( authorize -> authorize
                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
         ).csrf(csrf -> csrf.disable())
                 .oauth2ResourceServer( auth -> auth.jwt(Customizer.withDefaults()))
                 .sessionManagement( session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

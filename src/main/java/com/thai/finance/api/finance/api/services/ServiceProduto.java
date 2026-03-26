@@ -31,6 +31,7 @@ public class ServiceProduto {
 
 
     public ProdutoRespostaDTO salvar(ProdutoRequisicaoDTO produtoRequisicaoDTO) {
+
         Categoria categoriaEncontrada = repositoryCategoria.findById(produtoRequisicaoDTO.categoria_id()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria Encontrada"));
         Fornecedor fornecedorEncontrado = repositoryFornecedor.findById(produtoRequisicaoDTO.fornecedor_id()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fornecedor Encontrado"));
 
@@ -38,7 +39,6 @@ public class ServiceProduto {
         EntidadeProduto.setFornecedor(fornecedorEncontrado);
         EntidadeProduto.setCategoria(categoriaEncontrada);
         var produtoSalvo = repositoryProduto.save(EntidadeProduto);
-        Estoque EntidadeEstoque = new Estoque(null, produtoSalvo, EntidadeProduto.getEstoque_minimo());
 
         return mapper.paraDTO(produtoSalvo);
 
@@ -49,11 +49,11 @@ public class ServiceProduto {
     }
 
     public void atualizar(UUID produto_id, ProdutoRequisicaoDTO produtoRequisicaoDTO) {
+
         var produtoEcontrado = repositoryProduto.findById(produto_id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
 
         Categoria categoriaEncontrada = repositoryCategoria.findById(produtoRequisicaoDTO.categoria_id()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
         Fornecedor fornecedorEncontrado = repositoryFornecedor.findById(produtoRequisicaoDTO.fornecedor_id()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fornecedor não encontrado"));
-
 
         produtoEcontrado.setNome(produtoRequisicaoDTO.nome());
         produtoEcontrado.setSku(produtoRequisicaoDTO.sku());
@@ -67,7 +67,6 @@ public class ServiceProduto {
     public void remover(UUID productId) {
         Produto produtoExist = repositoryProduto.findById(productId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
         repositoryProduto.deleteById(produtoExist.getId());
-
     }
 
     public List<ProdutoRespostaDTO> buscar(String nome, String sku, String categoria) {
