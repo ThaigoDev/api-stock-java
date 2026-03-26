@@ -27,7 +27,7 @@ jwt:
    public:
      key: ${PUBLIC_KEY}
    private:
-    key: ${PRIVATE_KEy}
+    key: ${PRIVATE_KEY}
 
 ---
 spring:
